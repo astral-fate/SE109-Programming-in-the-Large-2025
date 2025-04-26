@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE 109: Object Oriented Programming</title>
+    <style>
+        /* Using similar CSS as the SE204 example */
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 85%; /* Adjusted width */
+            max-width: 1400px; /* Adjusted max-width */
+            margin: 20px auto;
+            background: #fff;
+            padding: 25px 40px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #B75D0D; /* Orange color from slides */
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #E87B0C; /* Lighter Orange */
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #fde8d1; /* Light orange background for headers */
+            font-weight: bold;
+            color: #6b4008;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #fff8f0;
+        }
+        tbody tr:hover {
+            background-color: #fde8d1;
+        }
+        a {
+            color: #0056b3; /* Standard link blue for contrast */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+         ul ul { /* Nested lists */
+             list-style-type: circle;
+             margin-left: 20px;
+         }
+        li {
+             margin-bottom: 5px;
+        }
+        strong { /* For grading percentages */
+            color: #28a745; /* Green */
+        }
+        .course-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre code {
+            display: block;
+            background-color: #2d2d2d; /* Dark background for code blocks */
+            color: #f8f8f2; /* Light text */
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto; /* Handle long lines */
+            white-space: pre;
+        }
+
+        /* Column widths (adjust as needed) */
+        th:nth-child(1), td:nth-child(1) { width: 10%; } /* Lecture */
+        th:nth-child(2), td:nth-child(2) { width: 35%; } /* Main Topics */
+        th:nth-child(3), td:nth-child(3) { width: 55%; } /* Key Concepts */
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE 109: Object Oriented Programming</h1>
+        <p class="course-info">
+            Instructor: Nesrine Ali Abd el Azim<br>
+            Assistant Professor in Information Systems and Technology Department, FGSSR
+        </p>
+         <p class="course-info">
+            This course is part of the
+            <a href="https://github.com/astral-fate/Cairo-University-Software-Engineering-Professional-Master-s-Degree" target="_blank" rel="noopener noreferrer">Cairo University Software Engineering Professional Master's Degree</a> program.
+        </p>
+
+        <h2>Course Outline & Syllabus</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Lecture</th>
+                    <th>Main Topics</th>
+                    <th>Key Concepts / Examples</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="lecture1.html">Lecture 1</a></td>
+                    <td>
+                        <ul>
+                            <li>Programming Methodologies</li>
+                            <li>Procedural Programming</li>
+                            <li>Object-Oriented Programming (OOP) Introduction</li>
+                            <li>Classes and Objects</li>
+                            <li>Object Interaction</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Procedural vs. OOP</li>
+                            <li>Features, Advantages, Limitations of Procedural Programming</li>
+                            <li>Advantages of OOP (Real-world modeling, Reusability, Modularity, Flexibility, Info Hiding)</li>
+                            <li>OOP Applications (CUI, GUI, CAD/CAM)</li>
+                            <li>Class as a blueprint, Object as an instance</li>
+                            <li>State (Attributes) and Behavior (Methods)</li>
+                            <li>Identity</li>
+                            <li>Creating Objects (<code>new</code> keyword)</li>
+                            <li>Message Passing (Method calls)</li>
+                            <li>Arguments and Return Values</li>
+                            <li>Variables vs. Objects</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="lecture2.html">Lecture 2</a></td>
+                    <td>
+                        <ul>
+                            <li>Features of OOP (Detailed)</li>
+                            <li>Relationships between Classes</li>
+                            <li>Types of Inheritance</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li><strong>Encapsulation:</strong> Data Hiding, Getters/Setters, Implementation Hiding, Read-only/Write-only fields. (Example: <code>EncapTest</code>)</li>
+                            <li><strong>Abstraction:</strong> Essential characteristics, Hiding irrelevant details, Interface vs. Implementation. (Example: Mobile phone)</li>
+                            <li><strong>Inheritance:</strong> Extending functionality, Code reuse, Superclass/Subclass (Parent/Child), IS-A relationship. (Examples: Animal hierarchy, Ticket hierarchy, Vehicle hierarchy)</li>
+                            <li><strong>Polymorphism:</strong> "Many forms", Method Overriding. (Example: <code>Shape</code>, <code>Rectangle</code>, <code>Triangle</code> classes with <code>area()</code> method)</li>
+                            <li><strong>Class Relationships:</strong> Kind-of (Class level), Is-A (Instance level), Part-of (Composition/Aggregation), Has-A (Composition/Aggregation).</li>
+                            <li><strong>Inheritance Types:</strong> Single, Multiple (conceptual, Java uses interfaces), Multilevel, Hierarchical, Hybrid, Multipath. (Diagrams discussed)</li>
+                            <li>Generalization & Specialization</li>
+                        </ul>
+                    </td>
+                </tr>
+                 <tr>
+                    <td><a href="lecture3.html">Lecture 3</a></td>
+                    <td>
+                        <ul>
+                            <li>Introduction to Java</li>
+                            <li>History and Evolution</li>
+                            <li>Java Environment & Architecture</li>
+                            <li>Basic Java Program Structure</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Relation to C/C++</li>
+                            <li>Why Java? (Portability, Security, Web)</li>
+                            <li>Key Features (Simple, OOP, Distributed, Robust, Secure, Portable, Multithreaded, Platform Independent, Interpreted/Compiled)</li>
+                            <li>Java Editions (J2SE, J2ME, J2EE)</li>
+                            <li>Java vs C++ Differences (Pointers, Operator Overloading, Global Variables, Pass-by-value)</li>
+                            <li>Java Architecture: Bytecode, JVM (Java Virtual Machine), JRE (Java Runtime Environment), JDK (Java Development Kit), API, Class Loader, Verifier, Execution Engine (Interpreter, JIT Compiler).</li>
+                            <li>WORA (Write Once, Run Anywhere)</li>
+                            <li>Applications vs. Applets</li>
+                            <li>Basic Syntax: Reserved words, Identifiers, Comments (<code>//</code>, <code>/* */</code>, <code>/** */</code> - Javadoc), Curly Braces, White Space.</li>
+                            <li><code>main</code> method structure (<code>public static void main(String[] args)</code>)</li>
+                            <li>Compile/Run Cycle (<code>javac</code>, <code>java</code>)</li>
+                            <li>Simple Java Application Example (<code>TestGreeting</code>, <code>Greeting</code> classes)</li>
+                            <li><code>System.out.println()</code></li>
+                            <li>Creating documentation (<code>javadoc</code>)</li>
+                        </ul>
+                    </td>
+                </tr>
+                 <tr>
+                    <td><a href="lecture4.html">Lecture 4</a></td>
+                    <td>
+                        <ul>
+                            <li>Java Data Types</li>
+                            <li>Operators</li>
+                            <li>String Handling</li>
+                            <li>Selection Statements (Conditionals)</li>
+                            <li>Repetition Statements (Loops)</li>
+                            <li>Arrays</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                             <li><strong>Data Types:</strong> Primitive (<code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>boolean</code>, <code>char</code> - Unicode) vs. Non-primitive (<code>String</code>, Arrays, Classes). Type Conversion (Implicit), Casting (Explicit).</li>
+                             <li><strong>Operators:</strong> Arithmetic (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>), Increment/Decrement (<code>++</code>, <code>--</code>), Relational (<code>==</code>, <code>!=</code>, <code>></code>, <code><</code>, <code>>=</code>, <code><=</code>), Logical (<code>&&</code>, <code>||</code>, <code>!</code> - short-circuit), Bitwise (<code>&</code>, <code>|</code>, <code>^</code>, <code>~</code>, <code>>></code>, <code>>>></code>, <code><<</code>), Assignment (<code>=</code>, <code>+=</code>, etc.), Conditional (Ternary <code>? :</code>), <code>instanceof</code>. Operator Precedence.</li>
+                             <li><strong>Strings:</strong> Concatenation (<code>+</code>), Immutability, String Pool, Creating Strings (literal vs <code>new</code>), Comparing Strings (<code>==</code> vs <code>.equals()</code>, <code>.equalsIgnoreCase()</code>), Accessing characters.</li>
+                             <li><strong>Selection:</strong> <code>if</code>, <code>if-else</code>, Nested <code>if</code>, Cascading <code>if-else if</code>, <code>switch</code> (<code>int</code>, <code>byte</code>, <code>short</code>, <code>char</code>, <code>String</code>; <code>case</code>, <code>break</code>, <code>default</code>). Flow of control.</li>
+                             <li><strong>Loops:</strong> <code>for</code> (initialization, condition, increment/decrement), <code>while</code> (condition), <code>do-while</code> (executes at least once), Nested Loops. <code>break</code> (exit loop), <code>continue</code> (skip iteration). (Examples: Number squaring, Star patterns).</li>
+                             <li><strong>Arrays:</strong> Declaring, Creating (<code>new</code>), Initializing (literal <code>{}</code>), Accessing elements (index <code>[]</code>), <code>.length</code> property, Default values, Storing multiple values, Array of objects. (Examples: <code>cars</code> array, <code>createArray</code> method).</li>
+                        </ul>
+                     </td>
+                 </tr>
+            </tbody>
+        </table>
+
+        <h2>Grading</h2>
+        <ul>
+            <li><strong>40%</strong>: Final Exam</li>
+            <li><strong>40%</strong>: Midterm Exam(s)</li>
+            <li><strong>20%</strong>: Attendance / Participation / Assignments</li>
+            <li>*(Note: Specific breakdown might vary, confirm with instructor)*</li>
+        </ul>
+
+        <h2>References</h2>
+        <ol>
+            <li>“An Introduction to Object Oriented Programming with Java”, C Thomas Wu</li>
+            <li>“The Complete Reference, Java 2”, Herbert Schildt, nineth edition.</li>
+            <li>“ Java, How to program” , Paul Deitel and Harvey Deitel, Tenth edition.</li>
+            <li><a href="http://www.java2s.com/" target="_blank" rel="noopener noreferrer">http://www.java2s.com/</a></li>
+            <li><a href="http://math.hws.edu/javanotes/" target="_blank" rel="noopener noreferrer">http://math.hws.edu/javanotes/</a></li>
+            <li><a href="http://docs.oracle.com/javase/tutorial/java/concepts/class.html" target="_blank" rel="noopener noreferrer">http://docs.oracle.com/javase/tutorial/java/concepts/class.html</a></li>
+            <li><a href="https://docs.oracle.com/javase/tutorial/" target="_blank" rel="noopener noreferrer">https://docs.oracle.com/javase/tutorial/</a></li>
+            <li><a href="http://docs.oracle.com/javase/7/docs/api/" target="_blank" rel="noopener noreferrer">http://docs.oracle.com/javase/7/docs/api/</a></li>
+            <li><a href="http://www.leepoint.net/JavaBasics/index.html" target="_blank" rel="noopener noreferrer">http://www.leepoint.net/JavaBasics/index.html</a></li>
+            <li><a href="https://docs.oracle.com/javase/specs/jls/se7/html/" target="_blank" rel="noopener noreferrer">https://docs.oracle.com/javase/specs/jls/se7/html/</a></li>
+        </ol>
+
+    </div>
+</body>
+</html>
