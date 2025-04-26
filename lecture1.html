@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE 109 - Lecture 1: Introduction to OOP</title>
+    <style>
+        /* Reusing the same CSS from index.html for consistency */
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .container { width: 85%; max-width: 1200px; margin: 20px auto; background: #fff; padding: 25px 40px; box-shadow: 0 0 15px rgba(0,0,0,0.1); border-radius: 8px; }
+        h1 { text-align: center; color: #B75D0D; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #E87B0C; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #D1690B; margin-top: 25px; }
+        ul { list-style-type: disc; padding-left: 20px; margin-top: 5px; margin-bottom: 10px; }
+        ul ul { list-style-type: circle; margin-left: 20px; }
+        li { margin-bottom: 8px; } /* Slightly more space between list items */
+        code { background-color: #eee; padding: 2px 4px; border-radius: 3px; font-family: monospace; color: #c7254e; }
+        pre code { display: block; background-color: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre; font-size: 0.9em; }
+        .concept { background-color: #fff8f0; border-left: 4px solid #E87B0C; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px;}
+        .concept strong { color: #B75D0D; }
+        .code-example { margin-top: 15px; margin-bottom: 15px; }
+        .nav-links { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+        .nav-links a { margin: 0 15px; color: #0056b3; font-weight: bold; }
+        .nav-links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE 109 - Lecture 1: Introduction to OOP Concepts</h1>
+
+        <div class="nav-links">
+            <a href="index.html">Course Index</a> |
+            <a href="lecture2.html">Next Lecture (Lec 2)</a>
+        </div>
+
+        <h2>Outline of Lecture 1</h2>
+        <ul>
+            <li>Differentiate between procedural and object-oriented programming.</li>
+            <li>Understand the Concepts of O.O.P</li>
+        </ul>
+
+        <h2>Programming Methodologies</h2>
+        <p>The main programming methodologies discussed are:</p>
+        <ul>
+            <li>Procedural programming.</li>
+            <li>Object-Oriented programming (OOP).</li>
+        </ul>
+
+        <h2>1. Procedural Programming</h2>
+        <div class="concept">
+            <p>Procedural programming involves dividing a large program into a set of modules (procedures, functions, subroutines) to perform specific tasks. Languages like Pascal and C utilize this approach.</p>
+            <p><strong>Key Characteristics:</strong></p>
+            <ul>
+                <li>Programs are divided into smaller procedures/functions.</li>
+                <li>Focus is on procedures (actions) rather than data.</li>
+                <li>Data is often shared globally or passed between functions.</li>
+                <li>Execution typically follows a sequential flow, calling procedures as needed.</li>
+                <li>Modules can be interdependent.</li>
+            </ul>
+            <p><em>(Slide 8 showed a diagram illustrating a program calling different procedures that access shared variables A, B, C).</em></p>
+        </div>
+
+        <h3>Features of Procedural Programming</h3>
+        <ul>
+            <li>Large programs are divided into smaller programs (modules/procedures).</li>
+            <li>Most of the data is shared and can be accessed from anywhere within the program (global data).</li>
+            <li>Procedures can be interdependent, making reuse in different applications difficult.</li>
+        </ul>
+
+        <h3>Advantages of Procedural Programming</h3>
+        <ul>
+            <li>Programs can be easy to read and maintain for smaller projects.</li>
+            <li>Code can be organized into various procedures.</li>
+            <li>It's relatively straightforward to trace the program flow.</li>
+        </ul>
+
+        <h3>Limitations of Procedural Programming</h3>
+        <ul>
+            <li>If data structures change, many functions that access that data might need modification.</li>
+            <li>Functions are often interdependent, making it hard to isolate or reuse them.</li>
+            <li>Reusability of code across different applications is generally not well supported.</li>
+            <li>Data is often exposed (globally accessible), making it vulnerable to unintended modifications.</li>
+            <li>Maintenance can become problematic as the code size increases due to interdependencies and exposed data.</li>
+        </ul>
+
+        <h2>2. Object-Oriented Programming (OOP)</h2>
+        <div class="concept">
+            <p>In OOP, a large application is broken down into independent components called <strong>objects</strong>. These objects encapsulate data and behavior and interact with each other to form a complete program.</p>
+        </div>
+
+        <h3>Advantages of OOP</h3>
+        <ul>
+            <li><strong>Real-world programming:</strong> Models real-world entities and their interactions more accurately than procedural programming.</li>
+            <li><strong>Reusability of code:</strong> Classes defined once can be reused in multiple applications (through instantiation or inheritance).</li>
+            <li><strong>Modularity of code:</strong> Objects are self-contained units, making them easier to maintain independently.</li>
+            <li><strong>Resilience to change (Flexibility):</strong> Changes within a class's implementation details often don't affect other parts of the system that use the class's public interface. Easier to evolve software.</li>
+            <li><strong>Information hiding (Encapsulation):</strong> Protects an object's internal state from unintended external access, ensuring data security and integrity.</li>
+        </ul>
+
+        <h3>Applications of OOP</h3>
+        <ul>
+            <li><strong>Character User Interface (CUI) based Applications:</strong> While less common now, OOP principles can structure command-line tools.</li>
+            <li><strong>Graphical User Interface (GUI) based Applications:</strong> GUI frameworks heavily rely on OOP (e.g., windows, buttons, menus as objects).</li>
+            <li><strong>Computer Aided Designing/Manufacturing (CAD/CAM):</strong> Creating reusable graphical and numerical building blocks.</li>
+            <li>Web Applications, Mobile Apps, Games, Enterprise Systems, and many more.</li>
+        </ul>
+
+        <h3>Object-Oriented Languages</h3>
+        <ul>
+            <li>Support an O-O view of problem solving.</li>
+            <li>Objects are categorized into classes.</li>
+            <li>Objects interact with each other.
+                <ul>
+                    <li>Objects have <strong>behavior</strong> (actions they can perform - methods).</li>
+                    <li>Objects maintain <strong>state</strong> (data they hold - attributes/variables).</li>
+                </ul>
+            </li>
+            <li>Behavior and state are intimately related within an object.</li>
+            <li>Software reuse is facilitated (through classes and inheritance).</li>
+        </ul>
+
+        <h2>Classes and Objects</h2>
+        <div class="concept">
+            <p><strong>Class:</strong> A blueprint or template that defines the structure (attributes/state) and behavior (methods) for a type of object. It's a user-defined data type. Example: A `Cat` class defines properties like name, age, type and behaviors like meow, play, eat.</p>
+            <p><strong>Object:</strong> An instance of a class. It's a basic building block of OOP. An object has its own state (specific values for attributes) but shares the behavior defined by its class. You access the data (state) of an object through its methods (behavior). Example: `myCat` and `yourCat` could be two distinct objects of the `Cat` class, each with potentially different names and ages.</p>
+            <p><em>(Slides 19 & 20 showed diagrams illustrating the Cat class blueprint and multiple cat object instances created from it, each with unique state but shared behavior).</em></p>
+        </div>
+
+        <h3>Characteristics of Objects</h3>
+        <ul>
+            <li><strong>State:</strong> Indicated by the set of attributes (variables) and their current values.</li>
+            <li><strong>Behavior:</strong> How an object acts and reacts, defined by its methods, often involving changes to its state.</li>
+            <li><strong>Identity:</strong> Each object is unique, even if it has the same state as another object of the same class. (Think of two identical physical objects - they are still distinct objects).</li>
+        </ul>
+        <p>Objects of the same class share the same behavior (methods), may or may not have the same state, but will always have a unique identity.</p>
+        <p><em>(Slide 22 showed characteristics: Objects can be physical (Shirt) or conceptual (Online Account). Properties include Size, Price, Color. Behaviors include Shop, Put item in cart, Pay).</em></p>
+        <p><em>(Slide 23 reiterated the Class as a blueprint/recipe and Objects as instances).</em></p>
+
+
+        <h2>Object Interaction</h2>
+        <div class="concept">
+            <p>Objects communicate by sending messages to each other. In programming terms, this usually means one object calling a method on another object.</p>
+            <ul>
+                <li>This can be to request information (calling a 'getter' method).</li>
+                <li>This can be to request an action or change state (calling a 'setter' or action method).</li>
+                <li>Often involves Client/Server relationships (one object, the client, requests a service from another object, the server).</li>
+            </ul>
+        </div>
+
+        <h3>Creating an Object</h3>
+        <p>Objects are typically created using the <code>new</code> keyword followed by a call to the class's constructor.</p>
+        <div class="code-example">
+            <p><strong>Example (Conceptual):</strong> Defining a variable and constructing an object.</p>
+            <pre><code>// An illustration of object creation.
+class A {
+    public static void main(String[] args){
+        // Define a variable 'b' that can refer to
+        // an object of class B.
+        B b;
+
+        // Construct a new B object and make 'b' refer to it.
+        b = new B(); // Assumes class B exists with a constructor B()
+    }
+}</code></pre>
+        </div>
+
+        <h3>Sending a Message (Calling a Method)</h3>
+        <p>Use the object variable followed by a dot (<code>.</code>) and the method name with parentheses <code>()</code>.</p>
+         <div class="code-example">
+            <p><strong>Example (Conceptual):</strong> Calling the `report()` method on object `b`.</p>
+            <pre><code>// An illustration of message sending.
+class C{
+    public static void main(String[] args){
+        // Make b refer to a new B object.
+        B b = new B(); // Create instance
+
+        // Send the 'report' message to the object b refers to.
+        b.report(); // Assumes class B has a method report()
+    }
+}</code></pre>
+        </div>
+
+        <h3>Passing Arguments with Messages</h3>
+        <p>Some methods require additional information (arguments or parameters) to perform their task. These are passed inside the parentheses.</p>
+        <div class="code-example">
+            <p><strong>Example (Conceptual):</strong> Setting the speed of a `Car` object.</p>
+            <pre><code>class Truck {
+    public static void main(String[] args){
+        Car c = new Car(); // Assume Car class exists
+
+        c.move(); // Assume move() method exists
+
+        // Ask the Car object 'c' to change its speed to 90.
+        // 90 is the argument passed to the setSpeed method.
+        c.setSpeed(90); // Assume setSpeed(int speed) method exists
+
+        c.move();
+    }
+}</code></pre>
+        </div>
+
+        <h3>Receiving Replies (Return Values)</h3>
+        <p>Methods can return information back to the caller. The result is often stored in a variable.</p>
+         <div class="code-example">
+            <p><strong>Example (Conceptual):</strong> Getting the current speed from a `Car` object.</p>
+            <pre><code>class Truck{
+    public static void main(String[] args){
+        Car c = new Car(); // Assume Car class exists
+
+        double currentSpeed; // Variable to store the reply
+
+        // Ask the car 'c' what its current speed is.
+        // The getSpeed() method returns a value (presumably a double).
+        currentSpeed = c.getSpeed(); // Assume getSpeed() returns a double
+
+        // Increase the car's speed based on the received value.
+        c.setSpeed(currentSpeed + 1); // Use the returned value
+
+        c.move();
+    }
+}</code></pre>
+        </div>
+
+        <h2>Variables and Objects</h2>
+        <div class="concept">
+            <ul>
+                <li><strong>Variables:</strong> Named storage locations for holding values (primitive types like <code>int</code>, <code>double</code>, or references to objects).</li>
+                <li><strong>Objects:</strong> Instances of classes (user-defined types). They reside in memory, and variables hold references (memory addresses) pointing to these objects.</li>
+                <li>A variable can be reassigned to refer to a different object of a compatible type, or it can be <code>null</code> (referring to no object).</li>
+                <li>Variables holding primitive types contain the actual value directly. Variables holding object types contain a reference (address).</li>
+            </ul>
+        </div>
+
+        <h2>Summary of Lecture 1</h2>
+        <ul>
+            <li>O-O problem solving involves identifying classes, objects, and their interactions.</li>
+            <li>Objects maintain state (data) and exhibit class-defined behavior (methods).</li>
+            <li>Instances (objects) of the same class behave in similar ways (share methods) but have unique identities and potentially unique states.</li>
+            <li>Message passing (method calls) illustrates object interaction.</li>
+            <li>Messages can include arguments (parameters) for providing additional information.</li>
+            <li>Messages can return results (return values) to the caller.</li>
+        </ul>
+
+        <div class="nav-links">
+            <a href="index.html">Course Index</a> |
+            <a href="lecture2.html">Next Lecture (Lec 2)</a>
+        </div>
+    </div>
+</body>
+</html>
