@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE 109 - Lecture 2: OOP Features & Relationships</title>
+    <style>
+        /* Reusing the same CSS from index.html/lecture1.html */
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .container { width: 85%; max-width: 1200px; margin: 20px auto; background: #fff; padding: 25px 40px; box-shadow: 0 0 15px rgba(0,0,0,0.1); border-radius: 8px; }
+        h1 { text-align: center; color: #B75D0D; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #E87B0C; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #D1690B; margin-top: 25px; }
+        h4 { color: #BA5C0A; margin-top: 20px; }
+        ul { list-style-type: disc; padding-left: 20px; margin-top: 5px; margin-bottom: 10px; }
+        ul ul { list-style-type: circle; margin-left: 20px; }
+        li { margin-bottom: 8px; }
+        code { background-color: #eee; padding: 2px 4px; border-radius: 3px; font-family: monospace; color: #c7254e; }
+        pre code { display: block; background-color: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre; font-size: 0.9em; }
+        .concept { background-color: #fff8f0; border-left: 4px solid #E87B0C; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px;}
+        .concept strong { color: #B75D0D; }
+        .code-example { margin-top: 15px; margin-bottom: 15px; border: 1px solid #eee; padding: 15px; border-radius: 5px; background-color: #fdfdfe; }
+        .nav-links { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+        .nav-links a { margin: 0 15px; color: #0056b3; font-weight: bold; }
+        .nav-links a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .diagram-note { font-style: italic; color: #666; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE 109 - Lecture 2: OOP Features, Relationships, and Inheritance</h1>
+
+        <div class="nav-links">
+            <a href="lecture1.html">Previous Lecture (Lec 1)</a> |
+            <a href="index.html">Course Index</a> |
+            <a href="lecture3.html">Next Lecture (Lec 3)</a>
+        </div>
+
+        <h2>Outline of Lecture 2</h2>
+        <ul>
+            <li>Features of OOP (Detailed)</li>
+            <li>Relationships between Classes</li>
+            <li>Types of Inheritance</li>
+        </ul>
+
+        <h2>Features of Object-Oriented Programming</h2>
+        <p>The core features that define OOP are:</p>
+        <ol>
+            <li>Encapsulation</li>
+            <li>Abstraction</li>
+            <li>Inheritance</li>
+            <li>Polymorphism</li>
+        </ol>
+        <p class="diagram-note">(Slide 4 showed a diagram with these four features branching from "Object Oriented Programming Features").</p>
+
+        <h3>1. Encapsulation</h3>
+        <div class="concept">
+            <p><strong>Definition:</strong> Encapsulation is the bundling of data (attributes) and methods (behavior) that operate on the data within a single unit (a class). It also involves restricting direct access to some of an object's components (<strong>data hiding</strong>).</p>
+            <ul>
+                <li>It's the process of hiding the internal state (data/secrets) and implementation details of an object from the outside world.</li>
+                <li>Provides security to data and methods.</li>
+                <li>Keeps data and code safe from external interference.</li>
+                <li>Objects act like "black boxes": they expose *what* they can do (public methods), but hide *how* they do it (private data and method implementation).</li>
+                <li>Typically implemented by making instance variables <code>private</code> and providing <code>public</code> methods (<strong>getters</strong> and <strong>setters</strong>) to access or modify the data in a controlled way.</li>
+            </ul>
+            <p class="diagram-note">(Slide 5 showed an ATM as an analogy for encapsulation. Slide 7 showed a diagram of a capsule containing data (attributes) protected by an outer layer of methods).</p>
+            <p><strong>Benefits:</strong></p>
+            <ul>
+                <li><strong>Data Hiding:</strong> Protects internal state.</li>
+                <li><strong>Increased Flexibility:</strong> The internal implementation can change without affecting outside classes that use the public methods.</li>
+                <li><strong>Reusability:</strong> Encapsulated classes are easier to reuse.</li>
+                <li><strong>Maintainability:</strong> Changes are localized.</li>
+                <li>Control over data: Setters can include validation logic. Fields can be made read-only (no setter) or write-only (no getter).</li>
+            </ul>
+        </div>
+        <h4>How to implement encapsulation in Java:</h4>
+        <ol>
+            <li>Make instance variables <code>private</code>.</li>
+            <li>Provide <code>public</code> getter and setter methods for controlled access.</li>
+            <li>Getters retrieve the value, setters update the value.</li>
+        </ol>
+
+        <h4>Encapsulation Example:</h4>
+        <div class="code-example">
+            <p><strong>File: EncapTest.java</strong></p>
+            <pre><code>/* File name : EncapTest.java */
+public class EncapTest {
+   private String name;
+   private String idNum;
+   private int age;
+
+   public int getAge() {
+      return age;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public String getIdNum() {
+      return idNum;
+   }
+
+   public void setAge( int newAge) {
+      age = newAge;
+   }
+
+   public void setName(String newName) {
+      name = newName;
+   }
+
+   public void setIdNum( String newId) {
+      idNum = newId;
+   }
+}</code></pre>
+        </div>
+         <div class="code-example">
+            <p><strong>File: RunEncap.java (Using EncapTest)</strong></p>
+            <pre><code>/* File name : RunEncap.java */
+public class RunEncap {
+
+   public static void main(String args[]) {
+      EncapTest encap = new EncapTest();
+      encap.setName("James");
+      encap.setAge(20);
+      encap.setIdNum("12343ms");
+
+      System.out.print("Name : " + encap.getName() + " Age : " + encap.getAge());
+      // Output: Name : James Age : 20
+   }
+}</code></pre>
+            <p>In this example, <code>name</code>, <code>idNum</code>, and <code>age</code> are private. Access is only possible through the public <code>get...()</code> and <code>set...()</code> methods.</p>
+        </div>
+
+        <h3>2. Abstraction</h3>
+        <div class="concept">
+            <p><strong>Definition:</strong> Abstraction means hiding the complex implementation details and showing only the essential features (interfaces) of the object to the user. It focuses on *what* an object does, rather than *how* it does it.</p>
+            <ul>
+                <li>It denotes the essential characteristics that distinguish an object from others.</li>
+                <li>Helps in managing complexity by breaking down systems into manageable conceptual chunks.</li>
+                <li>Often achieved in Java using abstract classes and interfaces.</li>
+                <li><strong>Relationship with Encapsulation:</strong> Encapsulation *implements* abstraction. Encapsulation hides the internal details, while abstraction provides a simplified view (the public interface).</li>
+            </ul>
+            <p><strong>Example:</strong> Using a mobile phone. You know which buttons to press (interface/abstraction) but don't need to know the complex internal circuitry and software logic (implementation/encapsulation).</p>
+        </div>
+        <h4>Abstraction vs. Encapsulation Summary:</h4>
+         <p class="diagram-note">(Slide 19 presented a table comparing Abstraction and Encapsulation):</p>
+         <table>
+            <thead><tr><th>Abstraction</th><th>Encapsulation</th></tr></thead>
+            <tbody>
+                <tr><td>Solves the problem in the design level.</td><td>Solves the problem in the implementation level.</td></tr>
+                <tr><td>Used for hiding unwanted data and giving relevant data.</td><td>Means hiding the code and data into a single unit to protect the data from outside world.</td></tr>
+                <tr><td>Lets you focus on what the object does instead of how it does it.</td><td>Means hiding the internal details or mechanics of how an object does something.</td></tr>
+                <tr><td>Outer layout, used in terms of design. (Example: Outer look of a Mobile Phone, display screen and keypad buttons)</td><td>Inner layout, used in terms of implementation. (Example: Inner implementation detail of a Mobile Phone, how keypad buttons and Display Screen are connected using circuits)</td></tr>
+            </tbody>
+         </table>
+
+
+        <h3>3. Inheritance</h3>
+        <div class="concept">
+            <p><strong>Definition:</strong> Inheritance is a mechanism where a new class (subclass/child class) derives properties (attributes) and behaviors (methods) from an existing class (superclass/parent class).</p>
+            <ul>
+                <li>Promotes code reusability (write common code once in the superclass).</li>
+                <li>Establishes an "IS-A" relationship (a subclass IS-A type of its superclass).</li>
+                <li>Allows extending the functionality of existing classes without modifying them.</li>
+                <li>Enables sharing data and methods among related classes.</li>
+            </ul>
+             <p><strong>Terminology:</strong></p>
+             <ul>
+                <li><strong>Superclass:</strong> Parent / Base / Super type class (the class being inherited from).</li>
+                <li><strong>Subclass:</strong> Child / Derived / Sub type class (the class that inherits).</li>
+             </ul>
+             <p class="diagram-note">(Slides 20, 23, 25, 26, 27, 28, 29 showed various diagrams illustrating inheritance: Animal groups, Lion/Cub, Vehicle hierarchy, Ticket hierarchy, Animal/Herbivore/Carnivore etc., Animals/Amphibians/Reptiles/Mammals/Birds).</p>
+        </div>
+        <h4>Advantage of Inheritance:</h4>
+        <p>Code present in a base class need not be rewritten in its child class. Data members and methods of the parent class can be used (unless private) in the child class.</p>
+        <p class="diagram-note">(Slide 25 showed an example where `Confirmed Ticket` and `Requested Ticket` inherit common attributes like Flight Number, Date, Time, Destination from `Air Ticket` and add their own specific attributes like Seat Number or Status).</p>
+
+        <h3>4. Polymorphism</h3>
+        <div class="concept">
+            <p><strong>Definition:</strong> Polymorphism (from Greek meaning "many forms") is the ability of an object (or method or operator) to take on many forms. In OOP, it primarily refers to the ability of different objects to respond to the same message (method call) in different ways, specific to their type.</p>
+            <ul>
+                <li>Enables an entity (like a method call) to have more than one form depending on the context (often, the type of the object invoking it).</li>
+                <li>Often achieved through <strong>method overriding</strong> (subclass provides a specific implementation for a method inherited from its superclass) and <strong>method overloading</strong> (multiple methods with the same name but different parameters within the same class - less related to the core OOP definition of polymorphism).</li>
+            </ul>
+            <p class="diagram-note">(Slide 32 showed a person taking on different roles: shopper, superhero, presenter, mother, office worker - illustrating the "many forms" concept).</p>
+        </div>
+        <h4>Polymorphism Example (Method Overriding):</h4>
+         <p class="diagram-note">(Slide 33 showed a hierarchy: Shape -> Rectangle, Triangle, Circle).</p>
+        <div class="code-example">
+            <p><strong>File: Shape.java (Superclass)</strong></p>
+            <pre><code>public class Shape {
+    double dim1;
+    double dim2;
+
+    // These methods might be inherited or used by subclasses
+    public void SetDim1(double a) {
+        dim1 = a;
+    }
+    public void SetDim2(double b) {
+        dim2 = b;
+    }
+
+    // Generic area method (to be overridden)
+    public double area() {
+        System.out.println("Area for Figure is undefined.");
+        return 0;
+    }
+}</code></pre>
+        </div>
+         <div class="code-example">
+            <p><strong>File: Rectangle.java (Subclass)</strong></p>
+            <pre><code>public class Rectangle extends Shape {
+    // Override area for rectangle
+    @Override // Optional annotation, good practice
+    public double area() {
+        System.out.println("Inside Area for Rectangle.");
+        return dim1 * dim2; // Uses inherited dim1, dim2
+    }
+}</code></pre>
+        </div>
+        <div class="code-example">
+            <p><strong>File: Triangle.java (Subclass)</strong></p>
+            <pre><code>public class Triangle extends Shape {
+    // Constructor (assuming one was needed, added based on slide 36 usage)
+    public Triangle(double d1, double d2) {
+        SetDim1(d1);
+        SetDim2(d2);
+    }
+
+    // Override area for right triangle
+    @Override // Optional annotation, good practice
+    public double area() {
+        System.out.println("Inside Area for Triangle.");
+        return dim1 * dim2 / 2; // Uses inherited dim1, dim2
+    }
+}</code></pre>
+        </div>
+         <div class="code-example">
+            <p><strong>File: FindAreas.java (Demonstrating Polymorphism)</strong></p>
+            <pre><code>public class FindAreas {
+    public static void main(String args[]) {
+        Shape f = new Shape(); // Generic Shape object
+        f.SetDim1(10);
+        f.SetDim2(10);
+
+        Rectangle r = new Rectangle(); // Rectangle object
+        r.SetDim1(9);
+        r.SetDim2(5);
+
+        Triangle t = new Triangle(10, 8); // Triangle object
+        // Dimensions set via constructor in this version
+        // t.SetDim1(10); // These would override constructor values if called
+        // t.SetDim2(8);
+
+        System.out.println("Area is " + r.area()); // Calls Rectangle's area()
+        // Output: Inside Area for Rectangle.
+        // Output: Area is 45.0
+
+        System.out.println("Area is " + t.area()); // Calls Triangle's area()
+        // Output: Inside Area for Triangle.
+        // Output: Area is 40.0
+
+        // Note: Calling f.area() would print "Area for Figure is undefined." and return 0.
+
+        // Polymorphism example: Using a Shape reference for different objects
+        Shape shapeRef; // Can refer to Shape, Rectangle, or Triangle
+
+        shapeRef = r; // Point to Rectangle
+        System.out.println("Area via shapeRef (Rectangle): " + shapeRef.area());
+        // Output: Inside Area for Rectangle.
+        // Output: Area via shapeRef (Rectangle): 45.0
+
+        shapeRef = t; // Point to Triangle
+        System.out.println("Area via shapeRef (Triangle): " + shapeRef.area());
+        // Output: Inside Area for Triangle.
+        // Output: Area via shapeRef (Triangle): 40.0
+    }
+}</code></pre>
+            <p>The same method call `shapeRef.area()` behaves differently depending on the actual object type (`Rectangle` or `Triangle`) that `shapeRef` points to. This is polymorphism in action.</p>
+        </div>
+
+
+        <h2>Relationships Between Classes</h2>
+        <p>Besides inheritance (IS-A), other relationships exist:</p>
+        <ul>
+            <li><strong>Kind-of Relationship:</strong> Describes the relationship between a superclass and a subclass at the <em>class level</em>. A subclass is a 'kind-of' its superclass. (e.g., `Confirmed Ticket` is a Kind-of `Ticket`).</li>
+            <li><strong>Is-A Relationship:</strong> Describes the relationship between an <em>instance (object)</em> and its class, or through inheritance, its superclass. (e.g., An object `ticket1` (which is a `ConfirmedTicket`) IS-A `ConfirmedTicket` and also IS-A `Ticket`).</li>
+            <li><strong>Part-of Relationship (Composition/Aggregation):</strong> When a class contains an instance of another class as one of its members. (e.g., An `Employee` might be considered Part-of a `Department`).</li>
+            <li><strong>Has-A Relationship (Composition/Aggregation):</strong> The reverse of Part-of. When a class consists of another class. (e.g., A `Department` Has-A collection of `Employee` objects). This is often used to model aggregation ( looser relationship) or composition (stronger ownership).</li>
+        </ul>
+        <p class="diagram-note">(Slides 38, 39, 41, 42 showed diagrams illustrating these relationships).</p>
+
+
+        <h2>Types of Inheritance</h2>
+        <p>Inheritance can be categorized in different ways:</p>
+        <ul>
+            <li><strong>Single Inheritance:</strong> A subclass inherits from only one superclass. (Java classes directly support only single inheritance).
+                <p class="diagram-note">(Slide 44 showed a diagram like Parent -> Child).</p>
+            </li>
+            <li><strong>Multiple Inheritance:</strong> A subclass inherits from more than one superclass. (Java does *not* directly support multiple inheritance for classes due to the "diamond problem", but achieves a similar effect using <strong>Interfaces</strong>).
+                <p class="diagram-note">(Slide 45 showed a diagram like Parent1, Parent2 -> Child).</p>
+            </li>
+            <li><strong>Multilevel Inheritance:</strong> A class is derived from a class that is also derived from another class (e.g., Class C inherits from B, and B inherits from A).
+                <p class="diagram-note">(Slide 47 showed A -> B -> C).</p>
+            </li>
+            <li><strong>Hierarchical Inheritance:</strong> Multiple subclasses inherit from a single superclass (e.g., B, C, and D all inherit from A).
+                 <p class="diagram-note">(Slides 30, 49, 50 showed examples: A -> B, A -> C, A -> D; Vehicle -> Land, Water, Air; Land -> Car, Bus, etc.).</p>
+            </li>
+            <li><strong>Hybrid Inheritance:</strong> A combination of two or more types of inheritance (e.g., combining hierarchical and multiple - possible in languages supporting multiple inheritance or via interfaces in Java).
+                 <p class="diagram-note">(Slide 48 showed A -> B, A -> C, and D inheriting from both B and C).</p>
+            </li>
+            <li><strong>Multipath Inheritance:</strong> A subclass inherits from a superclass via multiple paths (leads to the diamond problem if not handled carefully, often involving multiple and hierarchical inheritance).
+                <p class="diagram-note">(Slide 52 showed A -> B, A -> C, and D inheriting from both B and C, creating two paths from A to D).</p>
+            </li>
+        </ul>
+         <p class="diagram-note">(Slide 53 showed a general classification diagram).</p>
+
+        <h3>Generalization & Specialization</h3>
+        <p>Inheritance hierarchies represent:</p>
+        <ul>
+            <li><strong>Generalization:</strong> Moving *up* the hierarchy from subclass to superclass (e.g., Car is generalized to Land Vehicle, which is generalized to Vehicle). Combining common features into a more general class.</li>
+            <li><strong>Specialization:</strong> Moving *down* the hierarchy from superclass to subclass (e.g., Vehicle is specialized into Land, Water, Air; Land Vehicle is specialized into Car, Bus). Adding specific features to create more specialized classes.</li>
+        </ul>
+        <p class="diagram-note">(Slide 51 showed the Vehicle hierarchy with arrows indicating Generalization upwards and Specialization downwards).</p>
+
+
+        <div class="nav-links">
+            <a href="lecture1.html">Previous Lecture (Lec 1)</a> |
+            <a href="index.html">Course Index</a> |
+            <a href="lecture3.html">Next Lecture (Lec 3)</a>
+        </div>
+    </div>
+</body>
+</html>
