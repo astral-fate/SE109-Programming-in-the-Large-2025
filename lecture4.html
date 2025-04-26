@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE 109 - Lecture 4: Data Types, Operators, Control Flow, Arrays</title>
+    <style>
+        /* Reusing the same CSS from index.html/lecture1.html */
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .container { width: 85%; max-width: 1200px; margin: 20px auto; background: #fff; padding: 25px 40px; box-shadow: 0 0 15px rgba(0,0,0,0.1); border-radius: 8px; }
+        h1 { text-align: center; color: #B75D0D; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #E87B0C; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #D1690B; margin-top: 25px; }
+        h4 { color: #BA5C0A; margin-top: 20px; }
+        ul { list-style-type: disc; padding-left: 20px; margin-top: 5px; margin-bottom: 10px; }
+        ul ul { list-style-type: circle; margin-left: 20px; }
+        li { margin-bottom: 8px; }
+        code { background-color: #eee; padding: 2px 4px; border-radius: 3px; font-family: monospace; color: #c7254e; }
+        pre { margin: 10px 0; } /* Add margin to pre tags */
+        pre code { display: block; background-color: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre; font-size: 0.9em; }
+        .concept { background-color: #fff8f0; border-left: 4px solid #E87B0C; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px;}
+        .concept strong { color: #B75D0D; }
+        .code-example { margin-top: 15px; margin-bottom: 15px; border: 1px solid #eee; padding: 15px; border-radius: 5px; background-color: #fdfdfe; }
+        .nav-links { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+        .nav-links a { margin: 0 15px; color: #0056b3; font-weight: bold; }
+        .nav-links a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em;}
+        th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; vertical-align: top;}
+        th { background-color: #fde8d1; font-weight: bold; color: #6b4008;}
+        tbody tr:nth-child(odd) { background-color: #fff8f0; }
+        .output { background-color: #e9ecef; padding: 10px; border-radius: 4px; margin-top: 5px; font-family: monospace; white-space: pre; }
+        .inline-code { background-color: #eee; padding: 1px 3px; border-radius: 3px; font-family: monospace; color: #c7254e; font-size: 0.95em;}
+        .operator-table td:nth-child(1) { font-weight: bold; font-family: monospace; } /* Style operator column */
+        .precedence-table td:nth-child(2) { font-family: monospace; white-space: nowrap;}
+        .precedence-table td:nth-child(1) { font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE 109 - Lecture 4: Data Types, Operators, Control Flow, and Arrays</h1>
+
+        <div class="nav-links">
+            <a href="lecture3.html">Previous Lecture (Lec 3)</a> |
+            <a href="index.html">Course Index</a>
+            <!-- Add link to next lecture if applicable -->
+        </div>
+
+        <h2>Outline of Lecture 4</h2>
+        <ul>
+            <li>Data types</li>
+            <li>Operators</li>
+            <li>Condition (Selection Statements)</li>
+            <li>Loops (Repetition Statements)</li>
+            <li>Arrays</li>
+        </ul>
+
+        <h2>Data Types</h2>
+        <div class="concept">
+            <p>Java data types are divided into two main groups:</p>
+            <ul>
+                <li><strong>Primitive Data Types:</strong> The basic building blocks for data. They store simple values directly.
+                    <ul>
+                        <li>Integer Types: <code>byte</code> (8-bit), <code>short</code> (16-bit), <code>int</code> (32-bit), <code>long</code> (64-bit)</li>
+                        <li>Floating-Point Types: <code>float</code> (32-bit), <code>double</code> (64-bit)</li>
+                        <li>Character Type: <code>char</code> (16-bit, Unicode)</li>
+                        <li>Boolean Type: <code>boolean</code> (represents <code>true</code> or <code>false</code>; size is JVM-dependent, notionally 1 bit)</li>
+                    </ul>
+                    <p>Primitive types do not have methods associated with them directly (they are not objects).</p>
+                </li>
+                <li><strong>Non-Primitive Data Types (Reference Types):</strong> These refer to objects in memory.
+                    <ul>
+                        <li><code>String</code></li>
+                        <li>Arrays</li>
+                        <li>Classes (user-defined or from the Java API)</li>
+                        <li>Interfaces</li>
+                    </ul>
+                    <p>Non-primitive types have methods that can be called on their instances (objects).</p>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Primitive Data Types Summary</h3>
+        <table>
+             <thead>
+                <tr><th>Type</th><th>Size (in bits)</th><th>Range / Values</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>byte</code></td><td>8</td><td>-128 to 127</td></tr>
+                <tr><td><code>short</code></td><td>16</td><td>-32,768 to 32,767</td></tr>
+                <tr><td><code>int</code></td><td>32</td><td>-2<sup>31</sup> to 2<sup>31</sup>-1</td></tr>
+                <tr><td><code>long</code></td><td>64</td><td>-2<sup>63</sup> to 2<sup>63</sup>-1</td></tr>
+                <tr><td><code>float</code></td><td>32</td><td>Approx. ±1.4e-45 to ±3.4e+38</td></tr>
+                <tr><td><code>double</code></td><td>64</td><td>Approx. ±4.9e-324 to ±1.8e+308</td></tr>
+                <tr><td><code>char</code></td><td>16</td><td>0 to 65,535 (Unicode characters, e.g., 'A', '9', '\u0041')</td></tr>
+                <tr><td><code>boolean</code></td><td>~1</td><td><code>true</code> or <code>false</code></td></tr>
+            </tbody>
+        </table>
+        <p class="diagram-note">(Based on Slide 4 table)</p>
+
+        <h3>The <code>char</code> Type</h3>
+        <ul>
+            <li>Occupies 16 bits to support the <strong>Unicode</strong> character set (a superset of ASCII).</li>
+            <li>Character literals are enclosed in single quotes: <code>'A'</code>, <code>'9'</code>, <code>'!'</code>, <code>'\n'</code> (newline).</li>
+            <li><code>char</code> values can often be treated as integers (based on their Unicode value) and stored in integer variables (though this might require casting).</li>
+        </ul>
+
+        <h3>Type Conversion and Casting</h3>
+        <div class="concept">
+            <ul>
+                <li><strong>Implicit Conversion (Widening):</strong> Happens automatically when converting from a less precise type to a more precise type (e.g., <code>int</code> to <code>double</code>, <code>byte</code> to <code>int</code>). No data loss occurs.
+                    <pre><code>int i = 100;
+double d = i; // Implicit conversion from int to double</code></pre>
+                </li>
+                <li><strong>Explicit Conversion (Casting / Narrowing):</strong> Required when converting from a more precise type to a less precise type. Can result in data loss or truncation. Uses the cast operator <code>(typeName)</code>.
+                    <pre><code>double d = 3.14159;
+int i = (int) d; // Explicit cast required. i becomes 3 (fractional part lost)
+// int x = 3.14159; // Compile error without cast</code></pre>
+                </li>
+            </ul>
+        </div>
+
+        <h2>Operators</h2>
+        <p>Java provides a rich set of operators:</p>
+        <table class="operator-table">
+            <thead><tr><th>Category</th><th>Operators</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Arithmetic</td><td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code></td><td>Addition, Subtraction, Multiplication, Division, Modulus (Remainder)</td></tr>
+                <tr><td>Unary</td><td><code>+</code>, <code>-</code>, <code>++</code>, <code>--</code>, <code>!</code></td><td>Unary Plus, Unary Minus, Increment, Decrement, Logical NOT</td></tr>
+                <tr><td>Assignment</td><td><code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>, etc.</td><td>Simple and Combined Assignment</td></tr>
+                <tr><td>Relational</td><td><code>==</code>, <code>!=</code>, <code>></code>, <code><</code>, <code>>=</code>, <code><=</code></td><td>Equality, Inequality, Greater/Less than comparisons</td></tr>
+                <tr><td>Logical</td><td><code>&&</code>, <code>||</code></td><td>Logical AND, Logical OR (Short-circuiting)</td></tr>
+                <tr><td>Bitwise</td><td><code>&</code>, <code>|</code>, <code>^</code>, <code>~</code>, <code><<</code>, <code>>></code>, <code>>>></code></td><td>Bitwise AND, OR, XOR, Complement, Left Shift, Signed Right Shift, Unsigned Right Shift</td></tr>
+                <tr><td>Conditional</td><td><code>? :</code></td><td>Ternary Operator</td></tr>
+                <tr><td>Type Check</td><td><code>instanceof</code></td><td>Checks if an object is an instance of a class/interface</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Bitwise Operators Example</h3>
+        <div class="code-example">
+            <pre><code>public class Test {
+    public static void main(String args[]) {
+        int a = 60; /* 60 = 0011 1100 */
+        int b = 13; /* 13 = 0000 1101 */
+        int c = 0;
+
+        // Bitwise AND (&)
+        c = a & b; // 0011 1100 & 0000 1101 = 0000 1100 (12)
+        System.out.println("a & b = " + c ); // Output: a & b = 12
+
+        // Bitwise OR (|)
+        c = a | b; // 0011 1100 | 0000 1101 = 0011 1101 (61)
+        System.out.println("a | b = " + c ); // Output: a | b = 61
+
+        // Bitwise XOR (^)
+        c = a ^ b; // 0011 1100 ^ 0000 1101 = 0011 0001 (49)
+        System.out.println("a ^ b = " + c ); // Output: a ^ b = 49
+
+        // Bitwise Complement (~) - Inverts bits (affects sign due to two's complement)
+        c = ~a;    // ~0011 1100 = 1100 0011 (-61 in two's complement)
+        System.out.println("~a = " + c); // Output: ~a = -61
+
+        // Left Shift (<<) - Multiplies by 2^n
+        c = a << 2; // 0011 1100 << 2 = 1111 0000 (240)
+        System.out.println("a << 2 = " + c); // Output: a << 2 = 240
+
+        // Signed Right Shift (>>) - Divides by 2^n, preserves sign
+        c = a >> 2; // 0011 1100 >> 2 = 0000 1111 (15)
+        System.out.println("a >> 2 = " + c); // Output: a >> 2 = 15
+
+        // Unsigned Right Shift (>>>) - Divides by 2^n, fills with 0
+        c = a >>> 2; // 0011 1100 >>> 2 = 0000 1111 (15)
+        System.out.println("a >>> 2 = " + c); // Output: a >>> 2 = 15
+        // Difference between >> and >>> matters for negative numbers
+        int neg_a = -60; // 1100 0100
+        System.out.println("-60 >> 2 = " + (neg_a >> 2));   // Output: -60 >> 2 = -15 (1111 0001)
+        System.out.println("-60 >>> 2 = " + (neg_a >>> 2)); // Output: -60 >>> 2 = 1073741809 (0011 1100 01...) - fills with 0s
+    }
+}</code></pre>
+        </div>
+
+         <h3>Combined Assignment Operators Example</h3>
+         <div class="code-example">
+             <pre><code>public class MainClass {
+    public static void main(String args[]) {
+        int a = 1, b = 2, c = 3;
+
+        a += 5; // a = a + 5 --> a becomes 6
+        b *= 4; // b = b * 4 --> b becomes 8
+        // c += a * b; is equivalent to c = c + (a * b)
+        c += a * b; // c = 3 + (6 * 8) = 3 + 48 = 51
+        c %= 6; // c = c % 6 --> c = 51 % 6 = 3 (remainder of 51/6)
+
+        System.out.println("a = " + a); // Output: a = 6
+        System.out.println("b = " + b); // Output: b = 8
+        System.out.println("c = " + c); // Output: c = 3
+    }
+}</code></pre>
+         </div>
+
+        <h3>Conditional (Ternary) Operator (<code>? :</code>)</h3>
+        <div class="concept">
+             <p>A shorthand for an <code>if-else</code> statement that produces a value.</p>
+             <p><strong>Syntax:</strong> <code>condition ? value_if_true : value_if_false</code></p>
+             <p>It evaluates the <code>condition</code>. If <code>true</code>, the entire expression evaluates to <code>value_if_true</code>; otherwise, it evaluates to <code>value_if_false</code>.</p>
+             <p>Often used in assignments or return statements.</p>
+        </div>
+        <div class="code-example">
+             <pre><code>public class Test {
+    public static void main(String args[]){
+        int a = 10, b;
+        int x = 5, y = 10;
+
+        b = (a == 1) ? 20 : 30; // a is 10, condition is false, b becomes 30
+        System.out.println( "Value of b is : " + b ); // Output: Value of b is : 30
+
+        b = (a == 10) ? 20 : 30; // a is 10, condition is true, b becomes 20
+        System.out.println( "Value of b is : " + b ); // Output: Value of b is : 20
+
+        // Example from slide 18
+        int larger = (x >= y) ? x : y; // x=5, y=10. Condition false. larger becomes y (10).
+        System.out.println("Larger is: " + larger); // Output: Larger is: 10
+
+        // Example from slide 18
+        int n = -5;
+        int absValue = (n < 0) ? -n : n; // n=-5. Condition true. absValue becomes -(-5) = 5.
+        System.out.println("Absolute value is: " + absValue); // Output: Absolute value is: 5
+    }
+}</code></pre>
+         </div>
+
+        <h3><code>instanceof</code> Operator</h3>
+        <div class="concept">
+            <p>Checks if an object is an instance of a particular class or implements a specific interface.</p>
+            <p><strong>Syntax:</strong> <code>objectReference instanceof Type</code></p>
+            <p>Returns <code>true</code> if the object referred to by <code>objectReference</code> is of type <code>Type</code> (or a subclass of <code>Type</code>, or implements <code>Type</code> if it's an interface), otherwise returns <code>false</code>.</p>
+        </div>
+         <div class="code-example">
+            <pre><code>public class Test {
+    public static void main(String args[]){
+        String name = "James";
+        Integer number = 10;
+
+        // following will return true since name is type of String
+        boolean result1 = name instanceof String;
+        System.out.println( "name instanceof String: " + result1 ); // Output: name instanceof String: true
+
+        boolean result2 = name instanceof Object; // All classes inherit from Object
+        System.out.println( "name instanceof Object: " + result2 ); // Output: name instanceof Object: true
+
+        // boolean result3 = number instanceof String; // Compile error: Incompatible types
+        // System.out.println( "number instanceof String: " + result3 );
+
+         boolean result4 = number instanceof Integer;
+         System.out.println( "number instanceof Integer: " + result4 ); // Output: number instanceof Integer: true
+
+         Object obj = name; // Assign String to Object reference
+         boolean result5 = obj instanceof String;
+         System.out.println( "obj instanceof String: " + result5 ); // Output: obj instanceof String: true
+
+         obj = number; // Assign Integer to Object reference
+         boolean result6 = obj instanceof Integer;
+         System.out.println( "obj instanceof Integer: " + result6 ); // Output: obj instanceof Integer: true
+    }
+}</code></pre>
+         </div>
+
+
+        <h3>Operator Precedence</h3>
+        <p>Determines the order in which operators are evaluated in an expression. Parentheses <code>()</code> can override precedence.</p>
+        <p class="diagram-note">(Slide 15 showed a detailed precedence table. Key general rules: Unary ops > Multiplicative > Additive > Relational > Equality > Logical AND > Logical OR > Conditional > Assignment).</p>
+        <table class="precedence-table">
+             <thead><tr><th>Category</th><th>Operator</th><th>Associativity</th></tr></thead>
+             <tbody>
+                <tr><td><i>Postfix</i></td><td><code>expr++</code> <code>expr--</code></td><td>Left to right</td></tr>
+                <tr><td><i>Unary</i></td><td><code>++expr</code> <code>--expr</code> <code>+expr</code> <code>-expr</code> <code>~</code> <code>!</code></td><td>Right to left</td></tr>
+                <tr><td><i>Multiplicative</i></td><td><code>*</code> <code>/</code> <code>%</code></td><td>Left to right</td></tr>
+                <tr><td><i>Additive</i></td><td><code>+</code> <code>-</code></td><td>Left to right</td></tr>
+                <tr><td><i>Shift</i></td><td><code>&lt;&lt;</code> <code>&gt;&gt;</code> <code>&gt;&gt;&gt;</code></td><td>Left to right</td></tr>
+                <tr><td><i>Relational</i></td><td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>instanceof</code></td><td>Left to right</td></tr>
+                <tr><td><i>Equality</i></td><td><code>==</code> <code>!=</code></td><td>Left to right</td></tr>
+                <tr><td><i>Bitwise AND</i></td><td><code>&</code></td><td>Left to right</td></tr>
+                <tr><td><i>Bitwise XOR</i></td><td><code>^</code></td><td>Left to right</td></tr>
+                <tr><td><i>Bitwise OR</i></td><td><code>|</code></td><td>Left to right</td></tr>
+                <tr><td><i>Logical AND</i></td><td><code>&&</code></td><td>Left to right</td></tr>
+                <tr><td><i>Logical OR</i></td><td><code>||</code></td><td>Left to right</td></tr>
+                <tr><td><i>Conditional</i></td><td><code>? :</code></td><td>Right to left</td></tr>
+                <tr><td><i>Assignment</i></td><td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code> <code>&=</code> <code>^=</code> <code>|=</code> <code>&lt;&lt;=</code> <code>&gt;&gt;=</code> <code>&gt;&gt;&gt;=</code></td><td>Right to left</td></tr>
+             </tbody>
+        </table>
+        <p>Operators on the same line generally have equal precedence and are evaluated based on associativity (usually left-to-right, except for unary and assignment).</p>
+
+
+        <h2>String Handling</h2>
+        <div class="concept">
+            <p><code>String</code> is a non-primitive data type (a class) in Java, found in the <code>java.lang</code> package (automatically available).</p>
+            <ul>
+                <li><strong>Concatenation:</strong> The <code>+</code> operator is overloaded for Strings. If one operand is a String, the other is converted to a String, and they are joined together.
+                    <ul>
+                        <li><code>"big" + "apple"</code> results in <code>"bigapple"</code></li>
+                        <li><code>"version " + 10</code> results in <code>"version 10"</code></li>
+                    </ul>
+                </li>
+                 <li><strong>Creation:</strong> Strings can be created using literals or the <code>new</code> keyword.
+                     <ul>
+                        <li><code>String s1 = "Hello";</code> (Literal - preferred, uses String pool)</li>
+                        <li><code>String s2 = new String("Hello");</code> (Creates a new object in the heap)</li>
+                         <li><code>char[] helloArray = { 'h', 'e', 'l', 'l', 'o'}; String s3 = new String(helloArray);</code></li>
+                    </ul>
+                 </li>
+                 <li><strong>Immutability:</strong> String objects are <strong>immutable</strong> in Java. Once a String object is created, its value (the sequence of characters) cannot be changed. Operations like concatenation create *new* String objects. This allows for optimizations like the String pool.</li>
+                 <li><strong>String Pool:</strong> Java maintains a pool of String literals. When you create a String using a literal (<code>String s1 = "Test";</code>), Java checks if "Test" already exists in the pool. If yes, it returns a reference to the existing object. If not, it creates a new object in the pool and returns its reference. This saves memory. Using <code>new String("Test")</code> *always* creates a new object outside the pool (on the heap).</li>
+                 <li><strong>Comparing Strings:</strong>
+                    <ul>
+                        <li><strong><code>==</code> operator:</strong> Compares object <em>references</em> (memory addresses). It checks if two variables point to the *exact same* object. Use with caution for Strings, especially when mixing literals and <code>new</code>.</li>
+                        <li><strong><code>.equals()</code> method:</strong> Compares the actual <em>content</em> (sequence of characters) of two String objects. This is the generally recommended way to check if two strings have the same value.</li>
+                        <li><strong><code>.equalsIgnoreCase()</code> method:</strong> Compares content, ignoring case differences.</li>
+                    </ul>
+                 </li>
+                 <li><strong>Accessing Characters:</strong> You can access individual characters using the <code>.charAt(index)</code> method (indexes are 0-based). The length is obtained via <code>.length()</code>.</li>
+             </ul>
+            <p class="diagram-note">(Slides 19-24 illustrated String pool behavior, heap allocation with `new`, and the difference between literal and `new` instantiation regarding references. Slides 26-28 showed `==` vs `.equals()` comparison examples).</p>
+        </div>
+         <div class="code-example">
+             <p><strong>String Comparison Example:</strong></p>
+            <pre><code>String s1 = "Hello";       // From pool
+String s2 = "Hello";       // From pool (same object as s1)
+String s3 = new String("Hello"); // New object on heap
+String s4 = new String("Hello"); // Another new object on heap
+String s5 = "He" + "llo";  // Concatenated literal, resolves to "Hello", from pool (same as s1)
+
+System.out.println("s1 == s2: " + (s1 == s2)); // true (both point to same pool object)
+System.out.println("s1 == s3: " + (s1 == s3)); // false (different objects)
+System.out.println("s3 == s4: " + (s3 == s4)); // false (different objects on heap)
+System.out.println("s1 == s5: " + (s1 == s5)); // true (s5 resolves to the same pool object)
+
+System.out.println("s1.equals(s2): " + s1.equals(s2)); // true (content matches)
+System.out.println("s1.equals(s3): " + s1.equals(s3)); // true (content matches)
+System.out.println("s3.equals(s4): " + s3.equals(s4)); // true (content matches)
+System.out.println("s1.equals(s5): " + s1.equals(s5)); // true (content matches)</code></pre>
+         </div>
+
+
+        <h2>Selection Statements (Conditional Control Flow)</h2>
+        <p>Allow the program to choose between different paths of execution based on a condition (a boolean expression).</p>
+
+        <h3><code>if</code> Statement</h3>
+        <div class="concept">
+            <p>Executes a block of code only if a condition is true.</p>
+            <p><strong>Syntax:</strong></p>
+            <pre><code>if (condition) {
+    // Statement(s) to execute if condition is true
+}
+// or for a single statement:
+if (condition)
+    statement; // Executes if condition is true</code></pre>
+             <p><strong>Flow:</strong> If condition is true, execute statement(s) inside the block/following the if. Then continue after the block. If condition is false, skip the statement(s) and continue after the block.</p>
+             <p class="diagram-note">(Slide 36 illustrated this flow: A -> if(true) -> B -> C; A -> if(false) -> C).</p>
+        </div>
+
+        <h3><code>if-else</code> Statement</h3>
+        <div class="concept">
+            <p>Executes one block of code if a condition is true, and another block if the condition is false.</p>
+            <p><strong>Syntax:</strong></p>
+            <pre><code>if (condition) {
+    // Statement(s) to execute if condition is true
+} else {
+    // Statement(s) to execute if condition is false
+}</code></pre>
+            <p><strong>Flow:</strong> If condition is true, execute the `if` block, then skip the `else` block and continue after it. If condition is false, skip the `if` block, execute the `else` block, and then continue after it. Only one of the blocks (if or else) is ever executed.</p>
+             <p class="diagram-note">(Slides 4 & 5 from the second deck, and 41 & 42 from the first deck, illustrated this flow: A -> if(true) -> B -> D; A -> if(false) -> C -> D. Statements B and C are mutually exclusive).</p>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Odd or Even</strong></p>
+            <pre><code>import java.util.Scanner;
+
+public class TestInputOddorEven {
+    public static void main(String[] args) {
+        System.out.println("Please type an integer");
+        Scanner sc = new Scanner(System.in);
+        int x = sc.nextInt();
+
+        // Check if the remainder when divided by 2 is not 0
+        if ((x % 2) != 0) {
+            System.out.println(x + " is odd");
+        } else {
+            System.out.println(x + " is even");
+        }
+         sc.close(); // Good practice to close scanner
+    }
+}</code></pre>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Compare Two Integers</strong></p>
+            <pre><code>import java.util.Scanner;
+
+public class TestInput {
+    public static void main(String[] args) {
+        System.out.println("Please type two integers.");
+        Scanner sc = new Scanner(System.in);
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+
+        if (x >= y) {
+            System.out.println(x + " is the larger or they are equal.");
+        } else {
+            System.out.println(y + " is the larger.");
+        }
+         sc.close();
+    }
+}</code></pre>
+         </div>
+
+
+        <h3>Nested <code>if</code> Statements</h3>
+        <p>An <code>if</code> or <code>if-else</code> statement can be placed inside another <code>if</code> or <code>else</code> block.</p>
+        <div class="code-example">
+            <p><strong>Example: Find Largest of Three Numbers</strong></p>
+            <pre><code>// Assuming x, y, z are integers and largest is an int variable
+if (x >= y) {
+    // x is potentially the largest
+    if (x >= z) {
+        largest = x;
+    } else { // x < z, and x >= y --> z is largest
+        largest = z;
+    }
+} else { // x < y, so y is potentially the largest (or z)
+    if (y >= z) {
+        largest = y;
+    } else { // y < z, and y > x --> z is largest
+        largest = z;
+    }
+}
+System.out.println("The largest number is: " + largest);</code></pre>
+        </div>
+
+        <h3>Cascading <code>if-else if</code> Statement</h3>
+        <p>Used to select one block of code to execute from multiple alternatives based on a series of conditions.</p>
+        <div class="concept">
+            <p><strong>Syntax:</strong></p>
+            <pre><code>if (condition1) {
+    // Execute if condition1 is true
+} else if (condition2) {
+    // Execute if condition1 is false AND condition2 is true
+} else if (condition3) {
+    // Execute if condition1 AND condition2 are false, AND condition3 is true
+} else {
+    // Optional: Execute if none of the preceding conditions are true
+}</code></pre>
+            <p>The conditions are checked in order. As soon as one condition evaluates to <code>true</code>, its corresponding block is executed, and the rest of the chain is skipped.</p>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Simple Calculator</strong></p>
+             <pre><code>public class CalcClass {
+    public static void main(String[] arg) {
+        int a = 10, b = 3; // Changed values for clarity
+        char op = '+'; // Example operator
+
+        if (op == '+') {
+            System.out.println("sum is " + (a + b)); // Output: sum is 13
+        } else if (op == '-') {
+            System.out.println("sub is " + (a - b));
+        } else if (op == '*') {
+            System.out.println("mul is " + (a * b));
+        } else if (op == '/') {
+             if (b != 0) { // Avoid division by zero
+                System.out.println("div is " + (a / b)); // Integer division
+             } else {
+                 System.out.println("Cannot divide by zero");
+             }
+        } else {
+            System.out.println("Invalid operator");
+        }
+    }
+}</code></pre>
+        </div>
+
+        <h3>Multi-Expression Conditions (Logical Operators)</h3>
+         <p>Combine multiple boolean expressions using logical operators (<code>&&</code>, <code>||</code>, <code>!</code>).</p>
+         <table class="operator-table">
+            <thead><tr><th>Operator</th><th>LHS</th><th>RHS</th><th>Result</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td><code>&&</code> (AND)</td><td><code>false</code></td><td><em>any</em></td><td><code>false</code></td><td>Short-circuit: RHS not evaluated if LHS is false.</td></tr>
+                <tr><td><code>&&</code> (AND)</td><td><code>true</code></td><td><code>false</code></td><td><code>false</code></td><td></td></tr>
+                <tr><td><code>&&</code> (AND)</td><td><code>true</code></td><td><code>true</code></td><td><code>true</code></td><td>Result is true only if BOTH operands are true.</td></tr>
+                <tr><td><code>||</code> (OR)</td><td><code>true</code></td><td><em>any</em></td><td><code>true</code></td><td>Short-circuit: RHS not evaluated if LHS is true.</td></tr>
+                <tr><td><code>||</code> (OR)</td><td><code>false</code></td><td><code>false</code></td><td><code>false</code></td><td>Result is false only if BOTH operands are false.</td></tr>
+                <tr><td><code>||</code> (OR)</td><td><code>false</code></td><td><code>true</code></td><td><code>true</code></td><td></td></tr>
+                <tr><td><code>!</code> (NOT)</td><td><code>true</code></td><td>N/A</td><td><code>false</code></td><td>Reverses the boolean value.</td></tr>
+                <tr><td><code>!</code> (NOT)</td><td><code>false</code></td><td>N/A</td><td><code>true</code></td><td></td></tr>
+             </tbody>
+         </table>
+         <p><strong>Note:</strong> Java also has non-short-circuit bitwise logical operators (<code>&</code>, <code>|</code>) which *always* evaluate both operands, but these are less commonly used for boolean logic control flow.</p>
+        <div class="code-example">
+            <pre><code>int x = 5, y = 5, z = 5;
+int a = -1, b = -2;
+
+// Logical AND Example
+if ((x == y) && (y == z)) { // true && true --> true
+    System.out.println("x, y and z are equal."); // This will print
+}
+
+if ((a < 0) && (b < 0)) { // true && true --> true
+    System.out.println("Both values are negative."); // This will print
+}
+
+// Logical OR Example
+x = 3; // Change x
+if ((x < y) || (x < z)) { // 3 < 5 (true) || (doesn't matter) --> true
+    System.out.println("x is not the largest."); // This will print
+}
+
+a = 10; // Change a
+if ((a < 0) || (b < 0)) { // false || true --> true
+    System.out.println("At least one is negative."); // This will print
+}
+
+// Logical NOT Example
+boolean isOverdrawn = false;
+if (!isOverdrawn) { // !false --> true
+    System.out.println("Account is not overdrawn. Permit debit."); // This will print
+}</code></pre>
+        </div>
+
+
+        <h3><code>switch</code> Statement</h3>
+        <div class="concept">
+             <p>An alternative to a series of <code>if-else if</code> statements, particularly useful when checking a single variable against multiple constant values.</p>
+             <p><strong>Syntax:</strong></p>
+            <pre><code>switch (expression) {
+    case value1:
+        // Code block for value1
+        break; // Exits the switch
+    case value2:
+        // Code block for value2
+        break;
+    case value3: // Example of fall-through
+    case value4:
+        // Code block for value3 OR value4
+        break;
+    default: // Optional
+        // Code block if no case matches
+        // break; // Optional here, as it's the last block
+}</code></pre>
+             <ul>
+                 <li>The <code>expression</code> must evaluate to <code>byte</code>, <code>short</code>, <code>char</code>, <code>int</code>, <code>String</code> (since Java 7), or an <code>enum</code> type. It cannot be <code>null</code>.</li>
+                 <li>Each <code>case</code> label must be a constant value compatible with the expression's type.</li>
+                 <li>The <code>break</code> statement is crucial. Without it, execution "falls through" to the next case block.</li>
+                 <li>The <code>default</code> block executes if no other case matches. It's optional.</li>
+                 <li>Comparison of strings is case-sensitive.</li>
+             </ul>
+         </div>
+        <div class="code-example">
+            <p><strong>Example: Day of the week (with fall-through)</strong></p>
+            <pre><code>public class Main {
+    public static void main(String[] args) {
+        int day = 2; // Example: Tuesday
+
+        switch (day) {
+            case 1:
+                System.out.println("Monday");
+                break;
+            case 2:
+                System.out.println("Tuesday");
+                // No break here - deliberate fall-through!
+            case 3:
+                System.out.println("Wednesday");
+                break; // Exits after printing Wednesday
+            case 4:
+                System.out.println("Thursday");
+                break;
+            case 5:
+                System.out.println("Friday");
+                break;
+            default:
+                System.out.println("Weekend or Invalid day");
+        }
+        // Output for day = 2:
+        // Tuesday
+        // Wednesday
+    }
+}</code></pre>
+        </div>
+        <div class="code-example">
+             <p><strong>Example: Character Switch</strong></p>
+            <pre><code>public class MainClass {
+    public static void main(String[] args) {
+        char i = '2'; // Example input
+
+        switch (i) {
+            case '1':
+                System.out.println("One.");
+                break;
+            case '2':
+                System.out.println("Two."); // This will print
+                break; // Exits
+            case '3':
+                System.out.println("Three.");
+                break;
+            default:
+                System.out.println("You did not enter a valid value (1, 2, or 3).");
+        }
+        // Output: Two.
+    }
+}</code></pre>
+         </div>
+         <div class="code-example">
+            <p><strong>Example: Default Position</strong> (Default doesn't have to be last, but break is important)</p>
+            <pre><code>public class Main {
+    public static void main(String[] args) {
+        int day = 4; // Example: Thursday
+
+        switch (day) {
+            default: // Default can appear anywhere, but execution continues if no break
+                System.out.println("Looking forward to the Weekend");
+                // break; // <-- If break was here, only this would print for day=4
+
+            case 6:
+                System.out.println("Today is Saturday");
+                break;
+            case 7:
+                System.out.println("Today is Sunday");
+                break;
+        }
+        // Output for day = 4:
+        // Looking forward to the Weekend
+        // Today is Saturday
+    }
+}</code></pre>
+         </div>
+
+
+        <h2>Repetition Statements (Loops)</h2>
+        <p>Used to execute a block of code repeatedly as long as a condition is met or for a specific number of times.</p>
+
+        <h3>1. <code>for</code> Loop</h3>
+        <div class="concept">
+            <p>Ideal when the number of iterations is known beforehand.</p>
+            <p><strong>Syntax:</strong></p>
+            <pre><code>for (initialization; condition; update) {
+    // Statement(s) to execute in each iteration
+}</code></pre>
+            <ul>
+                <li><strong>Initialization:</strong> Executes once at the beginning. Often declares and initializes a loop control variable (e.g., <code>int i = 0</code>). Variables declared here are scoped to the loop.</li>
+                <li><strong>Condition:</strong> Evaluated before each iteration. If <code>true</code>, the loop body executes. If <code>false</code>, the loop terminates.</li>
+                <li><strong>Update:</strong> Executes at the end of each iteration (after the body). Often increments/decrements the loop variable (e.g., <code>i++</code>, <code>j--</code>).</li>
+            </ul>
+            <p>You can have multiple initializations or updates, separated by commas.</p>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Print Squares 0-9</strong></p>
+            <pre><code>// Example from Slide 3
+for (int i = 0; i < 10; i++) { // i is local to this loop
+    System.out.println(i + " squared is " + (i * i));
+}
+// 'i' cannot be accessed here</code></pre>
+             <p><strong>Output:</strong></p>
+            <pre class="output">0 squared is 0
+1 squared is 1
+2 squared is 4
+3 squared is 9
+4 squared is 16
+5 squared is 25
+6 squared is 36
+7 squared is 49
+8 squared is 64
+9 squared is 81</pre>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Multiple Variables</strong></p>
+            <pre><code>// Example from Slide 4
+for (int i = 0, j = 10; i < 10; i++, j--) { // i increments, j decrements
+    System.out.println(i + " " + j);
+    // Variables i and j are local to this loop
+}</code></pre>
+             <p><strong>Output:</strong></p>
+            <pre class="output">0 10
+1 9
+2 8
+3 7
+4 6
+5 5
+6 4
+7 3
+8 2
+9 1</pre>
+        </div>
+
+        <h3>2. <code>while</code> Loop</h3>
+        <div class="concept">
+             <p>Executes a block of code repeatedly *as long as* a condition remains true. The condition is checked *before* each iteration. If the condition is initially false, the loop body never executes.</p>
+             <p><strong>Syntax:</strong></p>
+             <pre><code>initialization; // Initialize loop variable(s) before the loop
+while (condition) {
+    // Statement(s) to execute
+    update; // Update loop variable(s) inside the loop
+}</code></pre>
+         </div>
+        <div class="code-example">
+             <p><strong>Example: Print Squares 0-9</strong></p>
+             <pre><code>// Example from Slide 5
+int i = 0; // Initialization
+while (i < 10) { // Condition
+    System.out.println(i + " squared is " + (i * i));
+    i++; // Update
+}</code></pre>
+             <p><em>(Output is the same as the `for` loop example above).</em></p>
+        </div>
+
+
+        <h3>3. <code>do-while</code> Loop</h3>
+        <div class="concept">
+            <p>Similar to `while`, but the condition is checked *after* the loop body executes. This guarantees the loop body runs at least once, even if the condition is initially false.</p>
+            <p><strong>Syntax:</strong></p>
+             <pre><code>initialization;
+do {
+    // Statement(s) to execute
+    update;
+} while (condition); // Note the semicolon at the end</code></pre>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Print Squares 0-9</strong></p>
+             <pre><code>// Example from Slide 6
+int i = 0; // Initialization
+do {
+    System.out.println(i + " squared is " + (i * i));
+    i++; // Update
+} while (i < 10); // Condition checked after the first iteration</code></pre>
+             <p><em>(Output is the same as the `for` and `while` loop examples above).</em></p>
+             <p><strong>When to use which loop?</strong></p>
+             <ul>
+                <li>Use <code>for</code> when the number of iterations is predetermined.</li>
+                <li>Use <code>while</code> or <code>do-while</code> when the number of iterations depends on a condition that might change within the loop, and you don't know beforehand how many times it will run.</li>
+                 <li>Use <code>do-while</code> if you need the loop body to execute at least once.</li>
+             </ul>
+        </div>
+
+        <h3>Loop Control Statements: <code>break</code> and <code>continue</code></h3>
+        <div class="concept">
+            <ul>
+                <li><strong><code>break;</code></strong> Immediately terminates the innermost loop (<code>for</code>, <code>while</code>, <code>do-while</code>) or <code>switch</code> statement it is in. Execution continues with the statement immediately following the terminated loop/switch.</li>
+                <li><strong><code>continue;</code></strong> Skips the rest of the current iteration of the innermost loop and proceeds to the next iteration (evaluates the condition/update for `for`/`while`).</li>
+            </ul>
+        </div>
+         <div class="code-example">
+             <p><strong>Example: Using <code>break</code></strong></p>
+            <pre><code>// Example from Slide 8
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            if (i == 4) {
+                break; // Exit the loop when i is 4
+            }
+            System.out.println(i);
+        }
+        // Output after loop: (Loop exited when i was 4)
+        System.out.println("Loop finished.");
+    }
+}</code></pre>
+            <p><strong>Output:</strong></p>
+            <pre class="output">0
+1
+2
+3
+Loop finished.</pre>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Using <code>continue</code></strong></p>
+            <pre><code>// Example from Slide 9
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            if (i == 4) {
+                continue; // Skip the rest of this iteration when i is 4
+            }
+            System.out.println(i); // This line is skipped when i is 4
+        }
+         System.out.println("Loop finished.");
+   }
+}</code></pre>
+             <p><strong>Output:</strong></p>
+            <pre class="output">0
+1
+2
+3
+5
+6
+7
+8
+9
+Loop finished.</pre>
+        </div>
+
+
+        <h3>Nested Loops</h3>
+        <p>Placing one loop inside another loop.</p>
+        <div class="concept">
+            <p>The "inner loop" completes all its iterations for *each single* iteration of the "outer loop".</p>
+        </div>
+        <div class="code-example">
+             <p><strong>Example: Outer/Inner Loop Execution</strong></p>
+            <pre><code>// Example from Slide 10
+// Outer loop
+for (int i = 1; i <= 2; i++) {
+    System.out.println("Outer: " + i); // Executes 2 times
+
+    // Inner loop
+    for (int j = 1; j <= 3; j++) {
+        System.out.println(" Inner: " + j); // Executes 3 times for each outer loop iteration (6 times total)
+    }
+}</code></pre>
+             <p><strong>Output:</strong></p>
+            <pre class="output">Outer: 1
+ Inner: 1
+ Inner: 2
+ Inner: 3
+Outer: 2
+ Inner: 1
+ Inner: 2
+ Inner: 3</pre>
+        </div>
+
+        <h4>Nested Loops for Patterns</h4>
+         <p>Nested loops are commonly used to print patterns.</p>
+         <p class="diagram-note">(Slides 11 & 12 showed images of various star and number patterns achievable with nested loops).</p>
+         <div class="code-example">
+             <p><strong>Example: Simple Triangle Pattern</strong></p>
+             <pre><code>// Based on Slide 13 (corrected System.out.println usage)
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i < 5; i++) { // Outer loop controls rows
+            // Inner loop controls columns in the current row
+            for (int j = 0; j <= i; j++) { // Prints '*' j times, up to i
+                System.out.print("*"); // print() stays on the same line
+            }
+            System.out.println(); // Moves to the next line after inner loop finishes
+        }
+    }
+}</code></pre>
+            <p><strong>Output:</strong></p>
+            <pre class="output">*
+**
+***
+****
+*****</pre>
+         </div>
+
+
+        <h2>Arrays</h2>
+        <div class="concept">
+            <p>Arrays are used to store multiple values of the <strong>same type</strong> in a single variable.</p>
+            <ul>
+                <li>They provide a way to manage collections of elements (primitive types or objects).</li>
+                <li>Elements are stored in contiguous memory locations (conceptually).</li>
+                <li>Each element is accessed using an <strong>index</strong> (an integer starting from 0).</li>
+                <li>Arrays have a fixed size, which is determined when the array is created and cannot be changed later.</li>
+                <li>In Java, arrays are objects. They inherit from the <code>Object</code> class.</li>
+            </ul>
+            <p>Instead of declaring many variables like <code>int x1, x2, ..., x50;</code>, you can use an array: <code>int[] x = new int[50];</code>.</p>
+        </div>
+
+        <h3>Declaring Arrays</h3>
+        <p>You declare an array variable by specifying the type followed by square brackets <code>[]</code> and the variable name.</p>
+        <pre><code>dataType[] arrayName; // Preferred way
+// or
+dataType arrayName[]; // Works, but less common (C/C++ style)</code></pre>
+        <p>Examples:</p>
+        <ul>
+            <li><code>int[] myNum;</code></li>
+            <li><code>char[] s;</code></li>
+            <li><code>String[] cars;</code></li>
+            <li><code>Point[] p; // Where Point is a class</code></li>
+            <li><code>char[] t, s; // Declares t and s as char arrays (brackets apply to type)</code></li>
+            <li><code>char t[], s; // Declares t as a char array, but s as a single char variable!</code></li>
+        </ul>
+        <p><strong>Note:</strong> Declaring an array variable only creates a reference; it does not create the actual array object in memory yet.</p>
+
+        <h3>Creating (Instantiating) Arrays</h3>
+        <p>You create the array object and allocate memory using the <code>new</code> keyword, specifying the type and size.</p>
+        <pre><code>arrayName = new dataType[size];</code></pre>
+        <p>Examples:</p>
+        <ul>
+            <li><code>myNum = new int[10]; // Creates an array to hold 10 integers</code></li>
+            <li><code>s = new char[26]; // Creates an array for 26 characters</code></li>
+            <li><code>cars = new String[4]; // Creates an array for 4 String references</code></li>
+        </ul>
+        <p>When an array is created using <code>new</code>, its elements are initialized to default values:</p>
+        <ul>
+            <li><code>0</code> for numeric types (<code>int</code>, <code>double</code>, etc.)</li>
+            <li><code>'\u0000'</code> (null character) for <code>char</code></li>
+            <li><code>false</code> for <code>boolean</code></li>
+            <li><code>null</code> for object reference types (like <code>String</code>, <code>Point</code>)</li>
+        </ul>
+         <p>The <code>new</code> operator determines the size, and once created, the array's size <strong>cannot be changed</strong>.</p>
+         <p>The array variable (e.g., <code>myNum</code>, <code>s</code>, <code>cars</code>) holds a reference to the first element (or the array object itself) in memory.</p>
+
+        <h3>Initializing Arrays</h3>
+        <p>You can declare, create, and initialize an array in one step using an array initializer (curly braces <code>{}</code>).</p>
+        <pre><code>dataType[] arrayName = {value1, value2, value3, ...};</code></pre>
+        <p>The size is implicitly determined by the number of elements provided.</p>
+        <p>Example:</p>
+        <pre><code>String[] cars = {"Volvo", "BMW", "Ford", "Mazda"}; // Size is 4
+int[] numbers = {10, 20, 30, 40, 50}; // Size is 5
+char[] letters = {'a', 'b', 'c'}; // Size is 3</code></pre>
+
+        <h3>Accessing Array Elements</h3>
+        <p>Elements are accessed using their zero-based index inside square brackets <code>[]</code>.</p>
+        <pre><code>arrayName[index]</code></pre>
+        <p>Examples:</p>
+        <ul>
+            <li><code>cars[0]</code> refers to "Volvo"</li>
+            <li><code>numbers[2]</code> refers to 30</li>
+            <li><code>letters[1] = 'x';</code> changes the second element to 'x'</li>
+        </ul>
+        <p>Valid indices range from <code>0</code> to <code>arrayName.length - 1</code>. Accessing an index outside this range will cause an <code>ArrayIndexOutOfBoundsException</code> at runtime.</p>
+
+        <h3>Array Length</h3>
+        <p>The number of elements in an array can be found using its <code>length</code> property (it's a property, not a method, so no parentheses).</p>
+        <pre><code>int size = cars.length; // size would be 4 for the cars array above</code></pre>
+
+        <h3>Iterating Through Arrays</h3>
+        <p>A common way to process all elements in an array is using a <code>for</code> loop with the <code>length</code> property.</p>
+         <div class="code-example">
+            <p><strong>Example: Print all cars</strong></p>
+            <pre><code>String[] cars = {"Volvo", "BMW", "Ford", "Mazda"};
+
+// Using a standard for loop
+System.out.println("Using standard for loop:");
+for (int i = 0; i < cars.length; i++) {
+    System.out.println(cars[i]);
+}
+
+// Using an enhanced for loop (for-each loop) - simpler syntax
+System.out.println("\nUsing enhanced for loop:");
+for (String car : cars) { // For each String 'car' in the 'cars' array
+    System.out.println(car);
+}</code></pre>
+             <p><strong>Output (for both loops):</strong></p>
+            <pre class="output">Volvo
+BMW
+Ford
+Mazda</pre>
+        </div>
+
+        <h3>Arrays Example: Creating and Returning an Array</h3>
+        <div class="code-example">
+            <p><strong>Example: Method to create an array of characters A-Z</strong></p>
+            <pre><code>public class ArrayExample {
+
+    // This method creates and returns an array of characters 'A' through 'Z'
+    public static char[] createAlphabetArray() {
+        // Declare a reference variable 's' for a char array
+        char[] s;
+
+        // Create the char array object with size 26
+        // and assign its reference to 's'
+        s = new char[26]; // Elements initialized to '\u0000'
+
+        // Alternative: Initialize with literals (but not A-Z easily)
+        // char[] s = {'a', 'b', 'c', ... };
+
+        // Fill the array with characters 'A' through 'Z'
+        for (int i = 0; i < 26; i++) {
+            // 'A' has an ASCII/Unicode value. Adding 'i' gives subsequent values.
+            // The result of ('A' + i) is an int, so it must be cast back to char.
+            s[i] = (char) ('A' + i);
+        }
+        return s; // Return the reference to the created array
+    }
+
+    public static void main(String[] args) {
+        char[] alphabet = createAlphabetArray(); // Call the method
+
+        // Print the returned array
+        System.out.println("Created Alphabet Array:");
+        for (int i = 0; i < alphabet.length; i++) {
+            System.out.print(alphabet[i] + " ");
+        }
+        System.out.println();
+        // Output: A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+    }
+}</code></pre>
+            <p><strong>Notes:</strong></p>
+            <ul>
+                <li>The method `createAlphabetArray` declares, creates, populates, and then returns a reference to the character array.</li>
+                <li>The `main` method calls `createAlphabetArray`, stores the returned reference in the `alphabet` variable, and then iterates through the array using the reference to print its contents.</li>
+                <li>The cast `(char)` is necessary because adding an `int` (`i`) to a `char` (`'A'`) results in an `int` value in Java.</li>
+            </ul>
+        </div>
+
+        <h2>Exercises (From Slide 21)</h2>
+        <ol>
+            <li>Create a program that prints a star pattern (like a pyramid or triangle) using nested loops. (See Slide 13 for a basic example).</li>
+            <li>Create a program that implements the factorial function (e.g., calculates 5! = 5 * 4 * 3 * 2 * 1). You could use a loop for this.</li>
+        </ol>
+        <p><em>(Solutions for these exercises are not provided in the slides but are common programming tasks using loops).</em></p>
+
+        <div class="nav-links">
+             <a href="lecture3.html">Previous Lecture (Lec 3)</a> |
+             <a href="index.html">Course Index</a>
+             <!-- Add link to next lecture if applicable -->
+        </div>
+    </div>
+</body>
+</html>
