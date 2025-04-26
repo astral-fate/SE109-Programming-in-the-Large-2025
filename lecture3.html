@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE 109 - Lecture 3: Introduction to Java</title>
+     <style>
+        /* Reusing the same CSS from index.html/lecture1.html */
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .container { width: 85%; max-width: 1200px; margin: 20px auto; background: #fff; padding: 25px 40px; box-shadow: 0 0 15px rgba(0,0,0,0.1); border-radius: 8px; }
+        h1 { text-align: center; color: #B75D0D; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #E87B0C; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #D1690B; margin-top: 25px; }
+        h4 { color: #BA5C0A; margin-top: 20px; }
+        ul { list-style-type: disc; padding-left: 20px; margin-top: 5px; margin-bottom: 10px; }
+        ul ul { list-style-type: circle; margin-left: 20px; }
+        li { margin-bottom: 8px; }
+        code { background-color: #eee; padding: 2px 4px; border-radius: 3px; font-family: monospace; color: #c7254e; }
+        pre code { display: block; background-color: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre; font-size: 0.9em; }
+        .concept { background-color: #fff8f0; border-left: 4px solid #E87B0C; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px;}
+        .concept strong { color: #B75D0D; }
+        .code-example { margin-top: 15px; margin-bottom: 15px; border: 1px solid #eee; padding: 15px; border-radius: 5px; background-color: #fdfdfe; }
+        .nav-links { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+        .nav-links a { margin: 0 15px; color: #0056b3; font-weight: bold; }
+        .nav-links a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .diagram-note { font-style: italic; color: #666; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE 109 - Lecture 3: Introduction to Java</h1>
+
+        <div class="nav-links">
+            <a href="lecture2.html">Previous Lecture (Lec 2)</a> |
+            <a href="index.html">Course Index</a> |
+            <a href="lecture4.html">Next Lecture (Lec 4)</a>
+        </div>
+
+        <h2>Outline of Lecture 3</h2>
+        <ul>
+            <li>Introduction of Java</li>
+            <li>Brief Description of Java</li>
+            <li>History of Java</li>
+            <li>Java Environment & Architecture</li>
+            <li>Basic Java Program Elements & Structure</li>
+            <li>Compiling and Running Java Programs</li>
+        </ul>
+
+        <h2>Introduction to Java</h2>
+        <div class="concept">
+            <ul>
+                <li>Java is related to C++, which is a descendant of C. Much of Java's syntax is derived from C/C++.</li>
+                <li>Many of Java's object-oriented features were influenced by C++.</li>
+                <li>Java was initially created not primarily for the internet, but for platform-independent software embedded in electronic devices (like microwaves, remote controls). The need arose partly from limitations in C/C++.</li>
+                <li>Java was designed to solve a set of problems encountered with C++ (like memory management, portability) rather than replace it entirely.</li>
+            </ul>
+            <p><strong>Definition:</strong> Java is a class-based, general-purpose, object-oriented programming language designed to have minimal implementation dependencies.</p>
+            <p><strong>Core Principle:</strong> WORA (Write Once, Run Anywhere) - Compiled Java code (bytecode) can run on any platform with a compatible Java Virtual Machine (JVM) without recompilation.</p>
+            <p>It is widely used and particularly designed for internet applications.</p>
+            <p class="diagram-note">(Slides 4, 5, 6, 7 showed Java's prevalence: standard for development, mobile apps, enterprise software, cloud platform, 9+ million developers, 3 billion phones).</p>
+        </div>
+
+        <h2>History of Java</h2>
+        <div class="concept">
+            <ul>
+                <li>Started by "The Green Team" at Sun Microsystems, led by <strong>James Gosling</strong> (often called the "Father of Java").</li>
+                <li>Originally called "Oak". Aimed at creating a platform-independent language for consumer electronic devices with different CPUs.</li>
+                <li>Initial concept faced challenges with consumer device adoption.</li>
+                <li>The rise of the World Wide Web provided a new market. The Oak language was well-suited for web multimedia components (Applets).</li>
+                <li>Renamed to "Java" in 1995.</li>
+            </ul>
+            <p class="diagram-note">(Slide 8 showed a picture of James Gosling. Slide 9 discussed the initial concept and shift to web focus).</p>
+        </div>
+
+        <h4>Why Java was created?</h4>
+        <ul>
+            <li>Troubles with C/C++ (memory management, portability issues).</li>
+            <li>C/C++ are not inherently portable or platform-independent.</li>
+            <li>Emergence of the WWW demanded portable programs (Applets).</li>
+            <li>Need for improved Portability and Security.</li>
+        </ul>
+
+        <h4>Timeline Highlights:</h4>
+         <table>
+            <thead><tr><th>Year</th><th>Development</th></tr></thead>
+            <tbody>
+                <tr><td>1990</td><td>Sun Microsystems team (Gosling) developed software for electronic devices.</td></tr>
+                <tr><td>1991</td><td>New language "Oak" introduced, using C++.</td></tr>
+                <tr><td>1993</td><td>WWW emerged, transforming the internet.</td></tr>
+                <tr><td>1994</td><td>Sun developed "HotJava" web browser to run applet programs.</td></tr>
+                <tr><td>1995</td><td>Oak was renamed to Java.</td></tr>
+                <tr><td>1996</td><td>Java established as an Object-Oriented Programming Language (OOPL).</td></tr>
+                <!-- Add more versions if needed based on slide 12 -->
+                 <tr><td>1996</td><td>JDK 1.0 released.</td></tr>
+                 <tr><td>1997</td><td>JDK 1.1 released.</td></tr>
+                 <tr><td>1998</td><td>JDK 1.2 (Beginning of J2SE, J2EE, J2ME naming).</td></tr>
+                 <tr><td>...</td><td>Subsequent versions released (JDK 1.4, 5, 6, 7, 8, 9...).</td></tr>
+                 <tr><td>2010</td><td>Oracle acquires Sun Microsystems.</td></tr>
+            </tbody>
+         </table>
+         <p class="diagram-note">(Slide 12 showed a detailed version history with specific release years for JDK versions, indicating Sun Microsystems origin and later Oracle acquisition).</p>
+
+
+        <h2>Java Editions</h2>
+        <p>Java technology comes in different editions tailored for specific types of development:</p>
+        <ul>
+            <li><strong>Java SE (Standard Edition):</strong> (Formerly J2SE) For developing desktop applications, console applications, and applets. This is the core platform.
+                <p class="diagram-note">(Slide 14 showed desktop/laptop computers).</p>
+            </li>
+            <li><strong>Java ME (Micro Edition):</strong> (Formerly J2ME) For developing applications for devices with limited resources, like mobile phones (older feature phones), set-top boxes, embedded devices, smart cards, Raspberry Pi.
+                <p class="diagram-note">(Slide 15 showed mobile phones and a set-top box).</p>
+            </li>
+            <li><strong>Java EE (Enterprise Edition):</strong> (Formerly J2EE, now Jakarta EE) Builds on Java SE. Used for developing large-scale, multi-tiered, reliable, and secure enterprise applications, often server-side and distributed. Includes APIs for web services, servlets, JavaServer Pages (JSP), etc.
+                 <p class="diagram-note">(Slide 16 showed server hardware and a web browser interface).</p>
+            </li>
+        </ul>
+
+        <h2>How Java is Different from C++</h2>
+        <ul>
+            <li><strong>Pointers:</strong> Java does not support explicit pointers, reducing complexity and memory errors. It uses references managed by the JVM.</li>
+            <li><strong>Data Structures:</strong> Java doesn't include C++'s `struct`, `union`, or `enum` (though Java has its own `enum` type introduced later, which is more object-oriented).</li>
+            <li><strong>Operator Overloading:</strong> Java does not allow user-defined operator overloading (except for `+` for String concatenation).</li>
+            <li><strong>Global Variables:</strong> Java doesn't support global variables; all variables and methods must be declared within a class.</li>
+            <li><strong>Object Passing:</strong> Java passes object references by value. This means the method receives a copy of the reference, allowing modification of the object's state, but not changing which object the original variable refers to. C++ allows passing by value, reference, or pointer.</li>
+            <li><strong>Compilation Target:</strong> C++ compiles directly to native executable code for a specific platform. Java compiles to platform-independent <strong>Bytecode</strong> (`.class` file), which is then interpreted or JIT-compiled by the JVM on the target platform.</li>
+        </ul>
+         <p class="diagram-note">(Slide 19 showed a comparison diagram: `MyProg.java` -> `javac` -> `MyProg.class` (Bytecode) -> JVM -> OS, versus `MyProg.cpp` -> `gcc` -> `myprog.exe` (Executable) -> OS).</p>
+
+        <h2>New Features Added in Java (Compared to C/C++)</h2>
+        <ul>
+            <li><strong>Multithreading:</strong> Built-in support for concurrent execution of different parts of a program.</li>
+            <li><strong>Packages:</strong> Mechanism for organizing related classes and interfaces, managing namespaces.</li>
+            <li><strong>Interfaces:</strong> Define contracts for classes, enabling a form of multiple inheritance of type.</li>
+            <li><strong>Automatic Garbage Collection:</strong> JVM automatically manages memory deallocation, preventing memory leaks common in C/C++.</li>
+            <li><strong>Boolean Data Type:</strong> Native `boolean` type (`true`/`false`).</li>
+            <li><strong>Exception Handling:</strong> Robust mechanism (similar to C++'s `try`/`catch`) for handling runtime errors.</li>
+        </ul>
+
+        <h2>Java Applications</h2>
+        <p>Java is used in a wide variety of applications:</p>
+        <ul>
+            <li>Web-based applications and web development (e.g., backend systems for LinkedIn, Amazon, using frameworks like Spring).</li>
+            <li>Big Data technology (e.g., Apache Hadoop framework is written in Java).</li>
+            <li>Internet of Things (IoT) devices.</li>
+            <li>Android Apps (Java is an official language for Android development, alongside Kotlin).</li>
+            <li>Desktop Applications (using libraries like Swing or JavaFX).</li>
+            <li>Computer games (e.g., Minecraft).</li>
+            <li>Enterprise applications, scientific computing, financial trading platforms, etc.</li>
+        </ul>
+
+
+        <h2>Characteristics of Java (Summary)</h2>
+         <ol>
+             <li><strong>Simple:</strong> Familiar C/C++ syntax, automatic memory management (garbage collection).</li>
+             <li><strong>Object-Oriented:</strong> Everything (except primitives) is an object; programs structured around classes.</li>
+             <li><strong>Distributed:</strong> Designed for network environments (supports TCP/IP, RMI, etc.).</li>
+             <li><strong>Robust:</strong> Strong compile-time error checking, strict runtime checking, exception handling, garbage collection reduce errors.</li>
+             <li><strong>Secure:</strong> Security features (Security Manager, bytecode verification, sandboxing for applets) prevent destructive actions.</li>
+             <li><strong>Platform Independent (Architecture Neutral):</strong> Achieved through bytecode and JVM. WORA.</li>
+             <li><strong>Portable:</strong> Platform independence plus standard library definitions ensure code runs similarly everywhere.</li>
+             <li><strong>Interpreted:</strong> JVM interprets bytecode at runtime (though JIT compilation makes it fast).</li>
+             <li><strong>High Performance:</strong> JIT compilers translate bytecode into native machine code for near-native speed.</li>
+             <li><strong>Multithreaded:</strong> Built-in support for concurrent programming.</li>
+             <li><strong>Dynamic:</strong> Classes loaded on demand; supports reflection.</li>
+         </ol>
+
+         <h3>Compiled and Interpreted Nature</h3>
+         <div class="concept">
+             <p>Java uses a two-stage process:</p>
+             <ol>
+                 <li><strong>Compilation:</strong> The Java compiler (<code>javac</code>) translates human-readable source code (`.java` file) into platform-independent <strong>Bytecode</strong> (`.class` file). The compiler performs syntax checking.</li>
+                 <li><strong>Interpretation/Execution:</strong> The Java Virtual Machine (JVM) on the target computer reads the Bytecode.
+                    <ul>
+                        <li>It may interpret the bytecode line by line, translating it into native machine instructions.</li>
+                        <li>More commonly, it uses a <strong>Just-In-Time (JIT)</strong> compiler to translate frequently executed sections of bytecode into native machine code *during* runtime for much better performance.</li>
+                    </ul>
+                 </li>
+             </ol>
+             <p>The Bytecode itself is platform-independent, but the JVM is platform-specific (there are different JVMs for Windows, Linux, macOS, etc.). This is how Java achieves "Write Once, Run Anywhere".</p>
+             <p class="diagram-note">(Slide 28 showed a diagram: Java Code -> JAVAC Compiler -> Byte Code -> JVM (Windows/Linux/Mac) -> Execution).</p>
+             <p><strong>Note:</strong> The Java compiler is typically written in Java, while the JVM (including the interpreter/JIT) is often written in C/C++ for performance.</p>
+         </div>
+
+
+        <h2>Java Environment</h2>
+        <div class="concept">
+            <p>The Java development and runtime environment consists of several key components:</p>
+            <ul>
+                <li><strong>JDK (Java Development Kit):</strong> Essential for *developing* Java applications. Includes tools like the compiler (<code>javac</code>), archiver (<code>jar</code>), debugger, documentation generator (<code>javadoc</code>), and the JRE.</li>
+                <li><strong>JRE (Java Runtime Environment):</strong> Required for *running* Java applications. Includes the JVM and the Java Class Libraries (APIs). Users who only want to run Java apps need the JRE, not the full JDK.</li>
+                <li><strong>JVM (Java Virtual Machine):</strong> The core component that executes Java bytecode. It's an abstract machine specification, with concrete implementations provided for different platforms.</li>
+                <li><strong>Java API (Application Programming Interface):</strong> A vast collection of pre-written classes and interfaces grouped into packages (e.g., <code>java.lang</code>, <code>java.util</code>, <code>java.io</code>) that provide standard functionality (like I/O, networking, data structures, GUI components).</li>
+            </ul>
+             <p class="diagram-note">(Slides 40, 41, 42, 43 showed diagrams illustrating the relationship between JDK, JRE, JVM, and how Java programs run on different OS via their respective JRE/JVM).</p>
+        </div>
+
+        <h3>JVM Components</h3>
+         <ul>
+             <li><strong>Class Loader:</strong> Dynamically loads `.class` files (bytecode) from disk or network into memory when needed.</li>
+             <li><strong>Bytecode Verifier:</strong> Checks the loaded bytecode for validity and security issues (e.g., proper format, no stack overflows, valid type conversions) before execution.</li>
+             <li><strong>Execution Engine:</strong> Executes the verified bytecode. This can be done via:
+                 <ul>
+                     <li><strong>Interpreter:</strong> Reads and executes bytecode instructions one by one. Slower but starts faster.</li>
+                     <li><strong>Just-In-Time (JIT) Compiler:</strong> Compiles frequently used bytecode into native machine code during runtime for faster execution. There's an initial compilation delay, but subsequent calls are much faster.</li>
+                 </ul>
+             </li>
+             <li><strong>Garbage Collector:</strong> Automatically reclaims memory occupied by objects that are no longer referenced by the program.</li>
+             <li>Other components: Runtime data areas (heap, stack, method area), native method interface, etc.</li>
+         </ul>
+
+
+        <h2>Java Program Types</h2>
+        <ul>
+            <li><strong>Application:</strong> A standalone program that runs directly on the host operating system using the JRE/JVM (like programs written in C/C++).</li>
+            <li><strong>Applet:</strong> (Largely obsolete now) A small Java program designed to be embedded within an HTML page and executed by a web browser's JVM plugin. Applets ran in a restricted "sandbox" environment for security.</li>
+        </ul>
+
+
+        <h2>Fundamental Language Elements</h2>
+        <ul>
+            <li><strong>Reserved Words (Keywords):</strong> Words with special meaning to the compiler (e.g., <code>class</code>, <code>public</code>, <code>static</code>, <code>void</code>, <code>int</code>, <code>if</code>, <code>for</code>). Cannot be used as identifiers. (Over 40 in Java).</li>
+            <li><strong>Identifiers:</strong> Names given by the programmer to classes, methods, variables, objects, etc. Must follow specific rules (e.g., start with letter, $, or _; contain letters, digits, $, _).</li>
+            <li><strong>Curly Braces <code>{}</code>:</strong> Define blocks of code (e.g., class bodies, method bodies, loop bodies). Always come in pairs.</li>
+            <li><strong>White Space:</strong> Spaces, tabs, newlines. Mostly ignored by the compiler but crucial for human readability. Required to separate identifiers and keywords. Indentation is used to show program structure.</li>
+            <li><strong>Comments:</strong> Ignored by the compiler, used for human explanation.
+                <ul>
+                    <li><code>// Single-line comment</code></li>
+                    <li><code>/* Multi-line comment */</code></li>
+                    <li><code>/** Javadoc comment */</code> (Used by the <code>javadoc</code> tool to generate documentation).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>The Simple Structure of a Method</h2>
+        <div class="concept">
+            <p>Methods define the behavior of objects. They have:</p>
+            <ul>
+                <li><strong>Header:</strong> Includes access modifiers (e.g., <code>public</code>), other modifiers (e.g., <code>static</code>), return type (e.g., <code>void</code>, <code>int</code>), method name, and parameter list in parentheses <code>()</code>.</li>
+                <li><strong>Body:</strong> Enclosed in curly braces <code>{}</code>. Contains declarations (local variables) and statements (code to be executed).</li>
+            </ul>
+            <h4>The <code>main</code> Method</h4>
+            <ul>
+                <li>The special starting point for a Java application.</li>
+                <li>Signature: <code>public static void main(String[] args)</code>
+                    <ul>
+                        <li><code>public</code>: Accessible from anywhere.</li>
+                        <li><code>static</code>: Can be called without creating an object of the class. Belongs to the class itself.</li>
+                        <li><code>void</code>: Does not return any value.</li>
+                        <li><code>main</code>: The specific name the JVM looks for.</li>
+                        <li><code>String[] args</code>: Parameter list - an array of Strings to receive command-line arguments.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h2>Compiling and Running a Simple Program</h2>
+        <div class="code-example">
+            <p><strong>File: Hello.java</strong></p>
+            <pre><code>// A program to print "hello, world".
+class Hello {
+    // main method - program execution begins here
+    public static void main(String[] args) {
+        // Print the text "hello, world" to the console
+        System.out.println("hello, world");
+    }
+}</code></pre>
+        </div>
+        <h4>The Edit-Compile-Run Cycle:</h4>
+        <ol>
+            <li><strong>Edit:</strong> Create/save the source code in a file named `Hello.java` (the filename must match the public class name).</li>
+            <li><strong>Compile:</strong> Use the Java compiler:
+                <pre><code>javac Hello.java</code></pre>
+                This generates the bytecode file `Hello.class`. If there are errors, edit the code and recompile.
+            </li>
+            <li><strong>Run:</strong> Use the Java Virtual Machine (interpreter):
+                <pre><code>java Hello</code></pre>
+                (Note: Do not include the `.class` extension when running). The JVM loads `Hello.class`, finds the `main` method, and executes it.
+            </li>
+        </ol>
+
+        <h3>Bytecode Files (`.class`)</h3>
+        <ul>
+            <li>The Java compiler creates one `.class` file for each class defined in the source code.</li>
+            <li>This file contains platform-independent bytecode.</li>
+            <li>The same `.class` file can be run on any machine with a compatible JVM.</li>
+        </ul>
+
+        <h2>Simple Java Application Example Walkthrough</h2>
+        <p>Let's re-examine the example from the slides:</p>
+        <div class="code-example">
+             <p><strong>File: TestGreeting.java</strong></p>
+            <pre><code>// code1 The TestGreeting.java Application
+// Sample “Hello World” Application
+public class TestGreeting { // Class name matches filename
+
+    public static void main (String [] args) { // Main method entry point
+
+        // 1. Create an object (instance) of the Greeting class
+        // 'new Greeting()' calls the constructor and allocates memory
+        // 'hello' is a variable holding the reference (address) to the object
+        Greeting hello = new Greeting();
+
+        // 2. Send a message (call the greet() method) to the object
+        // referred to by the 'hello' variable
+        hello.greet();
+
+    } // end main
+} // end class TestGreeting</code></pre>
+        </div>
+         <div class="code-example">
+            <p><strong>File: Greeting.java</strong></p>
+            <pre><code>// Code 2-2 The Greeting.java class
+public class Greeting { // Another class definition
+
+    // Method definition for the greet behavior
+    // 'public' means it can be called from other classes (like TestGreeting)
+    // 'void' means it doesn't return any value
+    public void greet() { // Between the parentheses, don’t write void
+
+        // Use the System class's 'out' object (standard output stream)
+        // and call its 'println' method to print text to the console
+        System.out.println("Hello ALL");
+
+    } // end greet method
+} // end class Greeting</code></pre>
+         </div>
+         <h4>Explanation Notes:</h4>
+         <ul>
+             <li><code>public class TestGreeting</code>: Declares the class. Filename must be `TestGreeting.java`. Compilation creates `TestGreeting.class`.</li>
+             <li><code>public static void main (String [] args)</code>: The entry point. The JVM starts execution here. The class containing `main` must have the same name as the `.java` file.</li>
+             <li><code>Greeting hello = new Greeting();</code>: Creates an object of the `Greeting` class. The `new` operator allocates memory and returns a reference, which is stored in the variable `hello`.</li>
+             <li><code>hello.greet();</code>: Calls the `greet()` method *on the specific `Greeting` object* that `hello` refers to.</li>
+             <li><code>System.out.println("...")</code>: Prints the string literal to the standard output console.
+                <ul>
+                    <li><code>System</code>: A built-in class in the <code>java.lang</code> package (imported automatically).</li>
+                    <li><code>out</code>: A `static` member variable of the `System` class. It's an object of type `PrintStream` representing the standard output. Being static, it's accessed via the class name (`System.out`).</li>
+                    <li><code>println(...)</code>: A method of the `PrintStream` class (the object `out`) that prints the argument followed by a newline.</li>
+                </ul>
+             </li>
+             <li><strong>Compilation:</strong> When you compile `TestGreeting.java` (e.g., `javac TestGreeting.java`), the compiler sees that it uses the `Greeting` class. If `Greeting.java` is in the same directory (or accessible via the classpath), it will also be compiled automatically, creating `Greeting.class`.</li>
+             <li><strong>Running:</strong> When you run `java TestGreeting`, the JVM loads `TestGreeting.class`, finds `main`, creates the `Greeting` object, and calls its `greet` method, resulting in "Hello ALL" being printed.</li>
+         </ul>
+
+         <h3>Working with Java Tools (Command Line)</h3>
+         <ul>
+            <li><strong>Setting the Path:</strong> To run `javac` and `java` from any directory, you need to add the JDK's `bin` directory (e.g., `C:\Program Files\Java\jdk-17\bin`) to your system's PATH environment variable.</li>
+            <li><strong>Compiling with Path:</strong> If not in the directory, you can specify the full path: `javac C:\path\to\your\code\TestGreeting.java`.</li>
+            <li><strong>Viewing Bytecode:</strong> `javap -c ClassName` (e.g., `javap -c TestGreeting`) disassembles the `.class` file and shows the bytecode instructions.</li>
+            <li><strong>Generating Documentation:</strong> `javadoc FileName.java` or `javadoc *.java` uses the `/** ... */` comments to generate HTML documentation for your code.</li>
+         </ul>
+
+
+        <div class="nav-links">
+             <a href="lecture2.html">Previous Lecture (Lec 2)</a> |
+             <a href="index.html">Course Index</a> |
+             <a href="lecture4.html">Next Lecture (Lec 4)</a>
+        </div>
+    </div>
+</body>
+</html>
