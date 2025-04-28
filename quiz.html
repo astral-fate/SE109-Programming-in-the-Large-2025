@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP SE109 Quiz</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .options button:hover:not(:disabled) {
+            background-color: #e9e9e9;
+        }
+
+        .options button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none; /* Initially hidden */
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+         /* Style for selected buttons */
+        .options button.selected.correct {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .options button.selected.incorrect {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+         /* Style to highlight the correct answer when wrong one is selected */
+        .options button.reveal-correct {
+            background-color: #d4edda; /* Light green background */
+            color: #155724;         /* Dark green text */
+            border: 1px solid #c3e6cb; /* Green border */
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>OOP SE109 Interactive Quiz</h1>
+
+    <div class="quiz-container" id="quiz-container">
+        <!-- Questions will be loaded here by JavaScript -->
+    </div>
+
+    <script>
+        const quizData = [
+            // Add Q# for clarity - JS will use index 0, 1, 2...
+            { // Q1
+                question: "Which is not a feature of OOP in general definitions?",
+                options: ["Efficient Code", "Code reusability", "Modularity", "Duplicate/Redundant data"],
+                answer: "Duplicate/Redundant data"
+            },
+            { // Q2
+                question: "Which feature of OOP indicates code reusability?",
+                options: ["Abstraction", "Polymorphism", "Encapsulation", "Inheritance"],
+                answer: "Inheritance"
+            },
+            { // Q3
+                question: "Which among the following doesn’t come under OOP concept?",
+                options: ["Data hiding", "Message passing", "Platform independent", "Data binding"],
+                answer: "Platform independent" // Platform independence is a feature of languages like Java, not inherent to OOP itself.
+            },
+            { // Q4
+                question: "Which is the correct syntax of inheritance?",
+                options: [
+                    "class base_classname :access derived_classname{ /*define class body*/ };",
+                    "class derived_classname : access base_classname{ /*define class body*/ };",
+                    "class derived_classname : base_classname{ /*define class body*/ };",
+                    "class base_classname : derived_classname{ /*define class body*/ };"
+                ],
+                answer: "class derived_classname : access base_classname{ /*define class body*/ };" // Common C++ syntax example
+            },
+            { // Q5
+                question: "The feature by which one object can interact with another object is _____________?",
+                options: ["Message reading", "Message Passing", "Data transfer", "Data Binding"],
+                answer: "Message Passing"
+            },
+            { // Q6
+                question: "Which among the following, for a pure OOP language, is true?",
+                options: [
+                    "The language should follow at least 1 feature of OOP",
+                    "The language must follow only 3 features of OOP",
+                    "The language must follow all the rules of OOP",
+                    "The language should follow 3 or more features of OOP"
+                ],
+                answer: "The language must follow all the rules of OOP" // Conceptually, pure OOP aims for everything to be an object, etc.
+            },
+            { // Q7
+                question: "What is encapsulation in OOP?",
+                options: [
+                    "It is a way of combining various data members and member functions that operate on those data members into a single unit",
+                    "It is a way of combining various data members and member functions into a single unit which can operate on any data",
+                    "It is a way of combining various data members into a single unit",
+                    "It is a way of combining various member functions into a single unit"
+                ],
+                answer: "It is a way of combining various data members and member functions that operate on those data members into a single unit"
+            },
+            { // Q8
+                question: "Which of the following is not true about polymorphism?",
+                options: [
+                    "Helps in redefining the same functionality",
+                    "Increases overhead of function definition always", // This is not *always* true or the primary characteristic.
+                    "It is feature of OOP",
+                    "Ease in readability of program"
+                ],
+                answer: "Increases overhead of function definition always"
+            },
+            { // Q9
+                question: "What is an abstraction in object-oriented programming?",
+                options: [
+                    "Hiding the implementation and showing only the features",
+                    "Hiding the important data",
+                    "Hiding the implementation",
+                    "Showing the important data"
+                ],
+                answer: "Hiding the implementation and showing only the features"
+            },
+            { // Q10
+                question: "Which access specifier is usually used for data members of a class?",
+                options: ["Protected", "Private", "Public", "Default"],
+                answer: "Private" // Encapsulation principle
+            },
+            { // Q11
+                question: "Which feature of OOP reduces the use of nested classes?",
+                options: ["Inheritance", "Binding", "Abstraction", "Encapsulation"],
+                answer: "Inheritance" // Allows structuring classes hierarchically instead of nesting everything.
+            },
+            { // Q12
+                question: "Which type of members can’t be accessed in derived classes of a base class?",
+                options: ["All can be accessed", "Protected", "Private", "Public"],
+                answer: "Private"
+            },
+            { // Q13
+                question: "Which feature of OOP is exhibited by the function overriding?",
+                options: ["Polymorphism", "Encapsulation", "Abstraction", "Inheritance"],
+                answer: "Polymorphism" // Runtime polymorphism specifically.
+            },
+            { // Q14
+                question: "Which keyword should be used to declare static variables?",
+                options: ["const", "common", "static", "stat"],
+                answer: "static"
+            },
+            { // Q15
+                question: "Which among the following is not a necessary condition for constructors?",
+                options: [
+                    "Its name must be same as that of class",
+                    "It must not have any return type",
+                    "It must contain a definition body", // Can be implicitly defined by compiler if empty.
+                    "It can contains arguments"
+                ],
+                answer: "It must contain a definition body"
+            },
+            { // Q16
+                question: "Instance of which type of class can’t be created?",
+                options: ["Parent class", "Abstract class", "Anonymous class", "Nested class"],
+                answer: "Abstract class"
+            },
+            { // Q17
+                question: "Which feature can be implemented using encapsulation?",
+                options: ["Polymorphism", "Overloading", "Inheritance", "Abstraction"],
+                answer: "Abstraction" // Encapsulation helps achieve abstraction by hiding internal details.
+            },
+             { // Q18 (Renumbered from original list)
+                question: "What is an object in Java?",
+                options: [
+                    "A blueprint for creating classes",
+                    "A template for creating methods",
+                    "An instance of a class with its own state and behavior",
+                    "A reserved keyword in Java"
+                ],
+                answer: "An instance of a class with its own state and behavior"
+            },
+            { // Q19 (Renumbered from original list - missing Q19-23)
+                question: "Which concept allows you to define multiple methods in OOP with the same name but different parameters in the same class?",
+                options: ["Polymorphism", "Inheritance", "Abstraction", "Overloading"],
+                answer: "Overloading" // Compile-time polymorphism.
+            },
+            { // Q20 (Renumbered from 24)
+                question: "What is encapsulation in Java?",
+                options: [
+                    "Hiding the internal details of an object and providing a public interface",
+                    "Defining multiple methods with the same name but different parameters",
+                    "Creating a new class from an existing class",
+                    "Storing data in a single variable"
+                ],
+                answer: "Hiding the internal details of an object and providing a public interface"
+            },
+            { // Q21 (Renumbered from 25)
+                question: "Which access modifier allows a class’s members (fields and methods) to be accessible only within the same package?",
+                options: ["private", "protected", "public", "default"],
+                answer: "default" // Also known as package-private.
+            },
+            { // Q22 (Renumbered from 26)
+                question: "What is the purpose of the “this” keyword in Java?",
+                options: [
+                    "To create a new instance of a class",
+                    "To refer to the current instance of the class",
+                    "To access static members of the class",
+                    "To define constructors"
+                ],
+                answer: "To refer to the current instance of the class"
+            },
+            { // Q23 (Renumbered from 27)
+                question: "What is a class constructor’s purpose in Java?",
+                options: [
+                    "To define the attributes of a class",
+                    "To create an instance of a class", // More accurately, initializes the object state during creation.
+                    "To destroy an instance of a class",
+                    "To hide the implementation of a class"
+                ],
+                answer: "To create an instance of a class"
+            },
+            { // Q24 (Renumbered from 28)
+                question: "What is the relationship between a class and an object in Java?",
+                options: [
+                    "An object is an instance of a class.",
+                    "A class is an instance of an object.",
+                    "A class and an object are the same thing.",
+                    "An object inherits from a class."
+                ],
+                answer: "An object is an instance of a class."
+            },
+            { // Q25 (Renumbered from 29)
+                question: "What is the default value of an instance variable (non-static field) of an object in Java if not explicitly initialized?",
+                options: ["0", "null", "false", "Depends on the data type"],
+                answer: "Depends on the data type" // (0 for numeric types, false for boolean, null for object references)
+            },
+            { // Q26 (Renumbered from 30)
+                question: "Can a class have multiple constructors in Java?",
+                options: [
+                    "No, a class can only have one constructor.",
+                    "Yes, but only if they have the same parameter list.",
+                    "Yes, a class can have multiple constructors with different parameter lists.",
+                    "Yes, but only if they have the same method name."
+                ],
+                answer: "Yes, a class can have multiple constructors with different parameter lists." // Constructor overloading
+            },
+            { // Q27 (Renumbered from 31)
+                question: "Which access modifier allows a class member to be accessible within the same package and by subclasses, even if they are in different packages?",
+                options: ["private", "protected", "public", "default (package-private)"],
+                answer: "protected"
+            },
+            { // Q28 (Renumbered from 32)
+                question: "What is the purpose of the “static” keyword for a class method in Java?",
+                options: [
+                    "To indicate that the method can only be called from a static context",
+                    "To create a new instance of the class",
+                    "To prevent the method from being overridden", // final does this
+                    "To indicate that the method belongs to the class, not an instance"
+                ],
+                answer: "To indicate that the method belongs to the class, not an instance"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+
+        // Function to shuffle options (optional, but good for quizzes)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+        }
+
+
+        // Function to display questions
+        function displayQuiz() {
+            quizData.forEach((qData, index) => {
+                // Create question block
+                const questionBlock = document.createElement('div');
+                questionBlock.classList.add('question-block');
+                questionBlock.setAttribute('data-question-index', index); // Link block to question index
+
+                // Create question text
+                const questionText = document.createElement('p');
+                questionText.classList.add('question-text');
+                questionText.textContent = `${index + 1}. ${qData.question}`; // Add question number
+                questionBlock.appendChild(questionText);
+
+                // Create options container
+                const optionsDiv = document.createElement('div');
+                optionsDiv.classList.add('options');
+
+                // Shuffle options before displaying (optional)
+                // const shuffledOptions = [...qData.options]; // Create a copy
+                // shuffleArray(shuffledOptions);
+
+                // Use original order for this example
+                const options = qData.options;
+
+                // Create buttons for each option
+                 options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option;
+                    button.addEventListener('click', handleAnswer);
+                    optionsDiv.appendChild(button);
+                });
+
+                questionBlock.appendChild(optionsDiv);
+
+                // Create feedback element (initially hidden)
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.classList.add('feedback');
+                questionBlock.appendChild(feedbackDiv);
+
+                // Add the complete question block to the container
+                quizContainer.appendChild(questionBlock);
+            });
+        }
+
+        // Function to handle answer selection
+        function handleAnswer(event) {
+            const selectedButton = event.target;
+            const selectedAnswer = selectedButton.textContent;
+            const questionBlock = selectedButton.closest('.question-block');
+            const questionIndex = parseInt(questionBlock.getAttribute('data-question-index'), 10);
+            const correctAnswer = quizData[questionIndex].answer;
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionButtons = questionBlock.querySelectorAll('.options button');
+
+            // Disable all buttons for this question
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                 // Remove hover effect possibility by removing the listener indirectly (though disabled is enough)
+            });
+
+            // Mark the selected button
+            selectedButton.classList.add('selected');
+
+            // Check if the answer is correct
+            if (selectedAnswer === correctAnswer) {
+                selectedButton.classList.add('correct');
+                feedbackDiv.textContent = 'Correct!';
+                feedbackDiv.classList.add('correct');
+            } else {
+                selectedButton.classList.add('incorrect');
+                feedbackDiv.textContent = `Incorrect. The correct answer is: ${correctAnswer}`;
+                feedbackDiv.classList.add('incorrect');
+
+                // Highlight the correct answer button
+                 optionButtons.forEach(button => {
+                    if (button.textContent === correctAnswer) {
+                        button.classList.add('reveal-correct');
+                    }
+                });
+            }
+        }
+
+        // Initial call to display the quiz when the page loads
+        displayQuiz();
+
+    </script>
+
+</body>
+</html>
