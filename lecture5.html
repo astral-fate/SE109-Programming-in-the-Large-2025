@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE 109 - Lecture 5: Class Definition, Access Control, Modifiers</title>
+    <style>
+        /* Reusing the same CSS from index.html/lecture4.html */
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .container { width: 85%; max-width: 1200px; margin: 20px auto; background: #fff; padding: 25px 40px; box-shadow: 0 0 15px rgba(0,0,0,0.1); border-radius: 8px; }
+        h1 { text-align: center; color: #B75D0D; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #E87B0C; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #D1690B; margin-top: 25px; }
+        h4 { color: #BA5C0A; margin-top: 20px; }
+        ul { list-style-type: disc; padding-left: 20px; margin-top: 5px; margin-bottom: 10px; }
+        ul ul { list-style-type: circle; margin-left: 20px; }
+        li { margin-bottom: 8px; }
+        code { background-color: #eee; padding: 2px 4px; border-radius: 3px; font-family: monospace; color: #c7254e; }
+        pre { margin: 10px 0; } /* Add margin to pre tags */
+        pre code { display: block; background-color: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre; font-size: 0.9em; }
+        .concept { background-color: #fff8f0; border-left: 4px solid #E87B0C; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px;}
+        .concept strong { color: #B75D0D; }
+        .code-example { margin-top: 15px; margin-bottom: 15px; border: 1px solid #eee; padding: 15px; border-radius: 5px; background-color: #fdfdfe; }
+        .nav-links { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+        .nav-links a { margin: 0 15px; color: #0056b3; font-weight: bold; }
+        .nav-links a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em;}
+        th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; vertical-align: top;}
+        th { background-color: #fde8d1; font-weight: bold; color: #6b4008;}
+        tbody tr:nth-child(odd) { background-color: #fff8f0; }
+        .output { background-color: #e9ecef; padding: 10px; border-radius: 4px; margin-top: 5px; font-family: monospace; white-space: pre; }
+        .inline-code { background-color: #eee; padding: 1px 3px; border-radius: 3px; font-family: monospace; color: #c7254e; font-size: 0.95em; }
+        .note { font-style: italic; color: #555; margin-top: 5px; font-size: 0.9em;}
+        .access-table td:nth-child(n+2) { text-align: center; font-family: monospace; } /* Center checkmarks/dashes */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE 109 - Lecture 5: Class Definition, Access Control, Modifiers</h1>
+
+        <div class="nav-links">
+            <a href="lecture4.html">Previous Lecture (Lec 4)</a> |
+            <a href="index.html">Course Index</a>
+            <!-- Add link to next lecture if applicable -->
+        </div>
+
+        <h2>Outline of Lecture 5</h2>
+        <ul>
+            <li>Class Definition or Class Declaration</li>
+            <li>Using Multiple classes</li>
+            <li>Accessors and Mutators (Getters/Setters)</li>
+            <li>Access Modifiers</li>
+            <li>Non-access Modifiers</li>
+        </ul>
+
+        <h2>Class Definition / Declaration</h2>
+        <div class="concept">
+            <p>A class definition serves as a blueprint for creating objects. It consists of:</p>
+            <ul>
+                <li><strong>Class Header:</strong> Defines the class name and optionally modifiers and inheritance.</li>
+                <li><strong>Class Body:</strong> Enclosed in curly braces <code>{}</code>, contains member definitions.</li>
+                <li><strong>Members:</strong> Define the state (data) and behavior (functionality) of objects created from the class.
+                    <ul>
+                        <li><strong>Fields (Attributes/Variables):</strong> Represent the data or state. Can be instance variables (unique to each object) or class variables (<code>static</code>, shared by all objects).</li>
+                        <li><strong>Methods (Functions):</strong> Define the actions or behavior an object can perform.</li>
+                        <li><strong>Constructors:</strong> Special methods used to initialize new objects. (Covered in more detail later, but mentioned in syntax).</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>Methods and fields can technically be arranged in any order within the class body, but common practice often lists methods before fields or groups related members together.</p>
+            <p class="diagram-note">(Based on Slides 3, 5)</p>
+        </div>
+
+        <h3>Syntax</h3>
+        <pre><code>Access-modifier class ClassName /* Often same as filename if public */ {
+    // Field (Attribute) declarations
+    dataType fieldName1;
+    dataType fieldName2;
+    // ...
+
+    // Constructor declaration(s)
+    ClassName(parameters) {
+        // Initialization code
+    }
+
+    // Method declarations
+    returnType methodName1(parameters) {
+        // Method body
+    }
+    // ...
+}</code></pre>
+        <p class="note">The order of attributes, constructors, and methods can vary, but the structure remains consistent. (Slide 4)</p>
+
+        <h3>Example Class Definition</h3>
+        <div class="code-example">
+        <pre><code>// Example based on Slide 6
+class First {
+    // --- Fields (Instance Variables) ---
+    int x, y;     // Properties representing integer coordinates or values
+    String ch;    // Property representing a String
+
+    // --- Constructor ---
+    // (Implicit default constructor is used if none is defined,
+    // or we can define one explicitly like this to set initial values)
+    public First() {
+        x = 2;
+        y = 3;
+        ch = " "; // Initialize String to a space
+    }
+
+    // --- Methods ---
+    // Mutator (Setter) method to change x and y
+    void setXY(int a, int b) {
+        x = a;
+        y = b;
+    }
+
+    // Accessor (Getter) method to retrieve the value of x
+    int getX() {
+        return x;
+    }
+
+    // Accessor (Getter) method to retrieve the value of y
+    int getY() {
+        return y;
+    }
+}</code></pre>
+        </div>
+
+        <h2>Creating and Using Objects</h2>
+        <div class="concept">
+            <ul>
+                <li>You can create multiple objects (instances) from a single class definition using the <code>new</code> keyword.</li>
+                <li>Each object gets its own copy of the instance variables defined in the class.</li>
+                <li>Changing the attribute values in one object does <strong>not</strong> affect the attribute values in other objects created from the same class.</li>
+                <li>The dot operator (<code>.</code>) is used to access an object's instance variables and call its methods.</li>
+            </ul>
+             <p class="diagram-note">(Based on Slides 7, 12)</p>
+        </div>
+
+        <div class="code-example">
+             <p><strong>Example: Multiple Objects</strong> (Slide 8)</p>
+             <pre><code>public class Main {
+    int x = 5; // Instance variable
+
+    public static void main(String[] args) {
+        Main myObj1 = new Main(); // Create Object 1
+        Main myObj2 = new Main(); // Create Object 2
+
+        // Modify the instance variable 'x' for myObj2
+        myObj2.x = 25;
+
+        // Print the value of 'x' for each object
+        System.out.println(myObj1.x); // Access x of myObj1
+        System.out.println(myObj2.x); // Access x of myObj2
+    }
+}</code></pre>
+            <p><strong>Output:</strong></p>
+            <pre class="output">5
+25</pre>
+            <p class="note">Shows that changing `myObj2.x` did not affect `myObj1.x`.</p>
+        </div>
+
+         <div class="code-example">
+             <p><strong>Example: Class with Multiple Attributes</strong> (Slide 9)</p>
+            <pre><code>public class Main {
+    // Instance variables
+    String fname = "John";
+    String lname = "Doe"; // Corrected variable name from 'Iname' to 'lname'
+    int age = 24;
+
+    public static void main(String[] args) {
+        Main myObj = new Main(); // Create an object
+
+        // Access the object's attributes
+        System.out.println("Name: " + myObj.fname + " " + myObj.lname);
+        System.out.println("Age: " + myObj.age);
+    }
+}</code></pre>
+             <p><strong>Output:</strong></p>
+            <pre class="output">Name: John Doe
+Age: 24</pre>
+        </div>
+
+        <h2>Using Multiple Classes / Files</h2>
+        <div class="concept">
+            <p>It's common practice to define different classes in separate <code>.java</code> files for better organization. Typically:</p>
+            <ul>
+                <li>One class might contain the data structures (fields) and methods operating on that data (e.g., <code>FirstFile.java</code>).</li>
+                <li>Another class might contain the <code>main</code> method, which creates objects of the first class and uses them (e.g., <code>SecondFile.java</code>).</li>
+                <li>The filename must match the name of the <code>public</code> class within that file. If there's no <code>public</code> class, the filename can match any class in the file.</li>
+                <li>To run the program, you generally need to compile all necessary <code>.java</code> files first (e.g., <code>javac FirstFile.java SecondFile.java</code>) and then run the class containing the <code>main</code> method (e.g., <code>java SecondFile</code>).</li>
+            </ul>
+             <p class="diagram-note">(Based on Slides 10, 11)</p>
+        </div>
+        <div class="code-example">
+             <p><strong>Example: Two Files</strong> (Slide 11)</p>
+            <p><strong>File 1: `FirstFile.java`</strong></p>
+            <pre><code>public class FirstFile {
+    int x = 5; // Instance variable (default access)
+}</code></pre>
+            <p><strong>File 2: `SecondFile.java`</strong> (Must be in the same directory/package)</p>
+            <pre><code>class SecondFile { // Not public, so filename doesn't *have* to be SecondFile.java, but good practice
+    public static void main(String[] args) {
+        // Create an object of the FirstFile class
+        FirstFile myObj = new FirstFile();
+
+        // Access the 'x' variable of the myObj instance
+        System.out.println(myObj.x); // Access is allowed because they are in the same package (default access)
+    }
+}</code></pre>
+             <p><strong>Compilation and Execution:</strong></p>
+             <pre><code>javac FirstFile.java SecondFile.java
+java SecondFile</code></pre>
+            <p><strong>Output:</strong></p>
+            <pre class="output">5</pre>
+            <p class="note">You must compile `FirstFile.java` first (or simultaneously) because `SecondFile.java` depends on the `FirstFile` class definition.</p>
+        </div>
+
+        <h2>Class Methods</h2>
+        <div class="concept">
+            <p>Methods define the behavior or actions associated with a class.</p>
+            <ul>
+                <li><strong>Instance Methods:</strong> Operate on a specific object (instance) of the class. They can access instance variables directly. They are called using an object reference (e.g., <code>myObj.myMethod();</code>).</li>
+                <li><strong>Static Methods:</strong> Belong to the class itself, not to any specific object. They are called using the class name (e.g., <code>ClassName.myStaticMethod();</code>). They cannot directly access instance variables or instance methods (unless they are given an object reference). The <code>main</code> method is always static.</li>
+            </ul>
+            <p>To call an instance method from a static context (like `main`), you first need to create an object of the class.</p>
+             <p class="diagram-note">(Based on Slides 12, 13, 29)</p>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Calling Instance vs. Static Methods</strong> (Slide 13, 29)</p>
+            <pre><code>public class MethodDemo {
+
+    // Instance method (needs an object to be called)
+    public void myInstanceMethod() {
+        System.out.println("Instance method called.");
+    }
+
+    // Static method (can be called using the class name)
+    static void myStaticMethod() {
+        System.out.println("Static method called.");
+    }
+
+    public static void main(String[] args) {
+        // Calling the static method using the class name
+        MethodDemo.myStaticMethod();
+        // Or just myStaticMethod(); if called from within the same class
+
+        // Cannot call instance method directly from static context:
+        // myInstanceMethod(); // This would cause a compilation error
+
+        // Must create an object first to call instance methods
+        MethodDemo myObj = new MethodDemo();
+        myObj.myInstanceMethod(); // Correct way to call instance method
+    }
+}</code></pre>
+             <p><strong>Output:</strong></p>
+            <pre class="output">Static method called.
+Instance method called.</pre>
+        </div>
+
+        <h2>Scope</h2>
+        <div class="concept">
+            <p><strong>Class Scope:</strong> Fields (instance variables and static variables) declared directly within the class body (outside any method) have class scope. This means they are generally accessible from anywhere *within* that class (e.g., from any instance method or static method of that class, respecting static/instance rules).</p>
+            <p>However, good practice (Encapsulation) often dictates using <code>private</code> access for fields and manipulating them only through methods (like accessors and mutators).</p>
+             <p class="diagram-note">(Based on Slide 14)</p>
+        </div>
+
+        <h2>Accessors (Getters) and Mutators (Setters)</h2>
+        <div class="concept">
+            <p>These are common types of methods used to control access to an object's (usually private) fields, supporting the principle of <strong>Encapsulation</strong>.</p>
+            <ul>
+                <li><strong>Accessor (Getter) Method:</strong>
+                    <ul>
+                        <li>Purpose: To retrieve the value of a private field.</li>
+                        <li>Convention: Named <code>getFieldName()</code> (or <code>isFieldName()</code> for booleans).</li>
+                        <li>Characteristics: Has a return type matching the field's type, takes no arguments, and contains a <code>return</code> statement. (Slide 15, 16)</li>
+                        <li>Example: <code>public String getName() { return this.name; }</code></li>
+                    </ul>
+                </li>
+                <li><strong>Mutator (Setter) Method:</strong>
+                    <ul>
+                        <li>Purpose: To modify the value of a private field.</li>
+                        <li>Convention: Named <code>setFieldName(DataType newValue)</code>.</li>
+                        <li>Characteristics: Usually has a <code>void</code> return type, takes one argument whose type matches the field's type. Can include validation logic before assigning the value. (Slide 15, 19)</li>
+                        <li>Example: <code>public void setName(String name) { this.name = name; }</code></li>
+                    </ul>
+                </li>
+                <li><strong>Encapsulation Benefit:</strong> By making fields <code>private</code> and providing public getters/setters, the class controls how its internal state is accessed and modified. This prevents direct, uncontrolled external modification. (Slide 17)</li>
+            </ul>
+             <p class="diagram-note">(Based on Slides 15-20)</p>
+        </div>
+
+         <div class="code-example">
+            <p><strong>General Form of Getters/Setters</strong> (Slide 20)</p>
+            <pre><code>public class MyData {
+    private type field; // Private instance variable
+
+    // Public Getter for 'field'
+    public type getField() {
+        return field;
+    }
+
+    // Public Setter for 'field'
+    public void setField(type f) {
+        // Optional: Add validation logic here
+        field = f;
+    }
+
+    // Constructor, other methods...
+}</code></pre>
+         </div>
+
+        <h2>Access Modifiers</h2>
+        <div class="concept">
+            <p>Access modifiers control the visibility (accessibility) of classes, fields, methods, and constructors.</p>
+             <p class="diagram-note">(Based on Slides 21, 22, 24, 25)</p>
+        </div>
+
+        <h3>For Classes</h3>
+        <ul>
+            <li><code>public</code>: The class is accessible from any other class, anywhere.</li>
+            <li><em>(default)</em> (No modifier): The class is only accessible by classes within the <strong>same package</strong>. Also known as package-private.</li>
+        </ul>
+
+        <h3>For Members (Attributes, Methods, Constructors)</h3>
+        <ul>
+            <li><code>public</code>: Accessible from any other class.</li>
+            <li><code>private</code>: Accessible only from within the <strong>declared class</strong> itself. This is key for encapsulation.</li>
+            <li><code>protected</code>: Accessible within the declared class, within other classes in the <strong>same package</strong>, and within <strong>subclasses</strong> (even if they are in different packages).</li>
+            <li><em>(default)</em> (No modifier / package-private): Accessible only from within classes in the <strong>same package</strong>.</li>
+        </ul>
+
+        <h3>Access Modifier Summary Table</h3>
+        <table class="access-table">
+            <thead>
+                <tr>
+                    <th>Modifier</th>
+                    <th>Same Class</th>
+                    <th>Same Package</th>
+                    <th>Subclass (Different Pkg)</th>
+                    <th>Different Package (Non-Subclass)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><code>public</code></td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+                <tr><td><code>protected</code></td><td>✔</td><td>✔</td><td>✔</td><td>✘</td></tr>
+                <tr><td><em>(default)</em></td><td>✔</td><td>✔</td><td>✘</td><td>✘</td></tr>
+                <tr><td><code>private</code></td><td>✔</td><td>✘</td><td>✘</td><td>✘</td></tr>
+            </tbody>
+        </table>
+        <p class="note">This table summarizes where a member declared with a given modifier can be accessed from. (Based on Slide 25 structure).</p>
+
+
+        <div class="code-example">
+            <p><strong>Example: Public Members</strong> (Slide 23)</p>
+            <p><strong>File 1: `Main.java`</strong></p>
+            <pre><code>// Assume this is in package 'com.example.data'
+package com.example.data;
+
+public class Main {
+    public String fname = "Mohamed";
+    public String lname = "Ali"; // Corrected name
+    public String email = "MA@hotmail.com";
+    public int age = 24;
+}</code></pre>
+             <p><strong>File 2: `Second.java`</strong> (Can be in a different package)</p>
+            <pre><code>// Assume this is in package 'com.example.app'
+package com.example.app;
+
+// Import the Main class from the other package
+import com.example.data.Main;
+
+public class Second {
+    public static void main(String[] args) {
+        Main myObj = new Main(); // Create object of Main
+
+        // Access public members from a different package
+        System.out.println("Name: " + myObj.fname + " " + myObj.lname);
+        System.out.println("Email: " + myObj.email);
+        System.out.println("Age: " + myObj.age);
+    }
+}</code></pre>
+            <p><strong>Output:</strong></p>
+            <pre class="output">Name: Mohamed Ali
+Email: MA@hotmail.com
+Age: 24</pre>
+        </div>
+         <div class="code-example">
+            <p><strong>Example: Private Members & Need for Getters</strong> (Slides 34, 35)</p>
+            <p><strong>File: `Account.java`</strong></p>
+            <pre><code>public class Account {
+    private int balance = 1000; // Private instance variable
+
+    // Public getter method for balance
+    public int getBalance() {
+        return balance;
+    }
+
+    // Maybe add a deposit method (setter concept)
+    public void deposit(int amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+}</code></pre>
+            <p><strong>File: `BankApp.java`</strong></p>
+            <pre><code>public class BankApp {
+    public static void main(String[] args) {
+        Account myAccount = new Account();
+
+        // Cannot access private member directly:
+        // System.out.println(myAccount.balance); // ERROR: balance has private access in Account
+
+        // Must use the public getter method:
+        System.out.println("Current balance: " + myAccount.getBalance()); // Works! Output: 1000
+
+        myAccount.deposit(500);
+        System.out.println("New balance: " + myAccount.getBalance()); // Output: 1500
+    }
+}</code></pre>
+            <p class="note">This illustrates why `private` is used (hides internal data) and how getters provide controlled access.</p>
+        </div>
+
+
+        <h2>Non-Access Modifiers</h2>
+        <div class="concept">
+            <p>These modifiers provide additional information about the characteristics of classes, methods, and variables, affecting their behavior beyond just visibility.</p>
+             <p class="diagram-note">(Based on Slides 26, 27, 30, 31)</p>
+        </div>
+
+        <h3>For Classes</h3>
+        <ul>
+            <li><code>final</code>: The class cannot be subclassed (inherited from). Useful for creating immutable classes or preventing extension.</li>
+            <li><code>abstract</code>: The class cannot be used to create objects (cannot be instantiated). It must be subclassed, and typically contains one or more <code>abstract</code> methods (methods without a body) that subclasses must implement.</li>
+        </ul>
+
+        <h3>For Members (Attributes & Methods)</h3>
+        <ul>
+            <li><code>final</code>:
+                <ul>
+                    <li>Variables: The value cannot be changed after initialization (creates a constant). Must be initialized when declared or in the constructor.</li>
+                    <li>Methods: The method cannot be overridden by subclasses.</li>
+                </ul>
+            </li>
+            <li><code>static</code>:
+                 <ul>
+                    <li>Variables (Class Variables): Shared among all instances of the class. Only one copy exists, associated with the class itself. Accessed using `ClassName.variableName`.</li>
+                    <li>Methods (Class Methods): Belong to the class, not an object. Called using `ClassName.methodName()`. Cannot directly access instance members.</li>
+                </ul>
+            </li>
+            <li><code>abstract</code>:
+                <ul>
+                    <li>Methods: Declares a method without providing an implementation (no body, ends with a semicolon). Must be declared within an <code>abstract</code> class. Subclasses (non-abstract ones) are required to provide an implementation (override the method).</li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>Note:</strong> <code>abstract</code> cannot be used with <code>final</code> (an abstract class must be subclassed, a final class cannot be; an abstract method must be overridden, a final method cannot be). <code>abstract</code> cannot be used with <code>private</code> (an abstract method needs to be overridden by a subclass, which wouldn't be possible if it were private).</p>
+
+        <h3>Access vs. Non-Access Modifiers</h3>
+        <ul>
+            <li><strong>Access Modifiers</strong> (<code>public</code>, <code>private</code>, <code>protected</code>, default) determine *who* can access a class or member (scope restriction).</li>
+            <li><strong>Non-Access Modifiers</strong> (<code>final</code>, <code>static</code>, <code>abstract</code>, etc.) define *characteristics* or *behavior* of the class or member (immutability, class-level association, requirement for implementation).</li>
+        </ul>
+
+
+        <h3>Examples of Non-Access Modifiers</h3>
+
+        <div class="code-example">
+            <p><strong>Example: `final` variable</strong> (Slide 28)</p>
+            <pre><code>public class Constants {
+    final int MAX_USERS = 100; // A final instance variable (constant for this object)
+    final double PI = 3.14159;  // Another final instance variable
+
+    static final String DEFAULT_GREETING = "Hello"; // A static final variable (class constant)
+
+    public static void main(String[] args) {
+        Constants c = new Constants();
+        // c.MAX_USERS = 200; // ERROR: cannot assign a value to final variable MAX_USERS
+        // c.PI = 3.0;       // ERROR: cannot assign a value to final variable PI
+
+        System.out.println("Max Users: " + c.MAX_USERS); // Output: 100
+        System.out.println("Default Greeting: " + Constants.DEFAULT_GREETING); // Output: Hello
+        // Constants.DEFAULT_GREETING = "Hi"; // ERROR: cannot assign a value to final variable
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-example">
+            <p><strong>Example: `static` members</strong> (Slides 29, 36-39)</p>
+            <p><strong>File: `Counter.java`</strong></p>
+            <pre><code>public class Counter {
+    private static int instanceCount = 0; // Static variable: shared by all objects
+    private int id; // Instance variable: unique to each object
+
+    public Counter() {
+        instanceCount++; // Increment shared counter whenever a new object is created
+        this.id = instanceCount; // Assign unique ID based on the count
+    }
+
+    // Static method to get the shared count
+    public static int getInstanceCount() {
+        // Cannot access 'this.id' here because it's an instance variable
+        return instanceCount;
+    }
+
+    // Instance method to get the object's unique ID
+    public int getId() {
+        return this.id;
+    }
+}</code></pre>
+            <p><strong>File: `TestCounters.java`</strong></p>
+             <pre><code>public class TestCounters {
+    public static void main(String[] args) {
+        System.out.println("Initial count: " + Counter.getInstanceCount()); // Access static method via class name
+
+        Counter c1 = new Counter();
+        System.out.println("Count after c1: " + Counter.getInstanceCount()); // Output: 1
+        System.out.println("c1 ID: " + c1.getId()); // Output: 1
+
+        Counter c2 = new Counter();
+        System.out.println("Count after c2: " + Counter.getInstanceCount()); // Output: 2
+        System.out.println("c2 ID: " + c2.getId()); // Output: 2
+
+        // Accessing static member via object reference works but is discouraged:
+        // System.out.println(c1.getInstanceCount()); // Still outputs 2
+
+        // Example of accessing static variable directly (if it were public)
+        // Assume 'public static int a = 12;' in class StaticVariables (Slide 37)
+        // System.out.println(StaticVariables.a); // Output: 12
+
+        // Example of accessing private static variable via static getter (Slide 39)
+        // Assume 'private static int a = 12;' and 'public static int getA()' in StaticVariables
+        // System.out.println(StaticVariables.getA()); // Output: 12
+    }
+}</code></pre>
+              <p><strong>Output:</strong></p>
+            <pre class="output">Initial count: 0
+Count after c1: 1
+c1 ID: 1
+Count after c2: 2
+c2 ID: 2</pre>
+        </div>
+
+         <div class="code-example">
+            <p><strong>Example: `abstract` class and method</strong> (Slides 40, 41)</p>
+            <p><strong>File 1: `Animal.java`</strong></p>
+            <pre><code>// Abstract class - cannot be instantiated directly
+abstract class Animal {
+    // Instance variable
+    public String name;
+
+    // Abstract method - no implementation, must be overridden by non-abstract subclasses
+    public abstract void makeSound();
+
+    // Concrete method (regular method with implementation)
+    public void sleep() {
+        System.out.println("Zzz...");
+    }
+}</code></pre>
+             <p><strong>File 2: `Dog.java`</strong> (Subclass)</p>
+            <pre><code>// Concrete subclass extending the abstract class
+class Dog extends Animal {
+    // Provides implementation for the abstract method
+    @Override
+    public void makeSound() {
+        System.out.println("Woof Woof");
+    }
+}</code></pre>
+            <p><strong>File 3: `TestAbstract.java`</strong></p>
+            <pre><code>public class TestAbstract {
+    public static void main(String[] args) {
+        // Cannot create an object of the abstract class Animal:
+        // Animal myAnimal = new Animal(); // ERROR: Animal is abstract; cannot be instantiated
+
+        // Create an object of the concrete subclass Dog
+        Dog myDog = new Dog();
+        myDog.name = "Buddy";
+
+        myDog.makeSound(); // Calls the implemented method in Dog
+        myDog.sleep();     // Calls the concrete method inherited from Animal
+    }
+}</code></pre>
+             <p><strong>Output:</strong></p>
+            <pre class="output">Woof Woof
+Zzz...</pre>
+        </div>
+
+
+        <div class="nav-links">
+             <a href="lecture4.html">Previous Lecture (Lec 4)</a> |
+             <a href="index.html">Course Index</a>
+             <!-- Add link to next lecture if applicable -->
+        </div>
+    </div>
+</body>
+</html>
