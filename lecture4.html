@@ -685,6 +685,56 @@ for (int i = 0, j = 10; i < 10; i++, j--) { // i increments, j decrements
 9 1</pre>
         </div>
 
+        <h3>1a. Enhanced <code>for</code> Loop (for-each)</h3>
+        <div class="concept">
+            <p>Provides a simpler way to iterate through all elements of an array or a collection without using an index explicitly.</p>
+            <p><strong>Syntax:</strong></p>
+            <pre><code>for (DataType elementVariable : arrayOrCollection) {
+    // Statement(s) using elementVariable
+}</code></pre>
+            <ul>
+                <li><strong>DataType elementVariable:</strong> Declares a variable of the same type as the elements in the array/collection. In each iteration, this variable holds the current element being processed.</li>
+                <li><strong>arrayOrCollection:</strong> The array or collection object you want to iterate over.</li>
+                <li>The loop automatically iterates through each element from the beginning to the end.</li>
+                <li>You cannot modify the array/collection structure (add/remove elements) inside a for-each loop iterating over it. You also don't have direct access to the index.</li>
+            </ul>
+        </div>
+        <div class="code-example">
+            <p><strong>Example: Print Elements of a String Array</strong></p>
+            <pre><code>String[] names = {"Alice", "Bob", "Charlie"};
+
+System.out.println("Names in the array:");
+for (String name : names) { // For each String 'name' in the 'names' array
+    System.out.println(name);
+}</code></pre>
+            <p><strong>Output:</strong></p>
+            <pre class="output">Names in the array:
+Alice
+Bob
+Charlie</pre>
+
+            <p><strong>Example: Iterating Over a 2D Array</strong></p>
+            <pre><code>int[][] myNumbers = { {1, 2, 3, 4}, {5, 6, 7} };
+
+System.out.println("Numbers in the 2D array:");
+// Outer loop iterates through each row (which is an int[] array)
+for (int[] row : myNumbers) {
+    // Inner loop iterates through each integer 'i' in the current 'row'
+    for (int i : row) {
+        System.out.println(i);
+    }
+}</code></pre>
+            <p><strong>Output:</strong></p>
+            <pre class="output">Numbers in the 2D array:
+1
+2
+3
+4
+5
+6
+7</pre>
+        </div>
+
         <h3>2. <code>while</code> Loop</h3>
         <div class="concept">
              <p>Executes a block of code repeatedly *as long as* a condition remains true. The condition is checked *before* each iteration. If the condition is initially false, the loop body never executes.</p>
