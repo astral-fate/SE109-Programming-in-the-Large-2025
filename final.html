@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Mock Exam (SE 109)</title>
+    <!-- Add Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- Tab Styles --- */
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 1em;
+            font-weight: bold;
+            color: #555;
+            border-bottom: 3px solid transparent; /* Placeholder for active border */
+            margin-bottom: -2px; /* Overlap border-bottom */
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .tab-buttons button:hover {
+            color: #007bff;
+        }
+
+        .tab-buttons button.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
+
+        .tab-content {
+            display: none; /* Hide content by default */
+        }
+
+        .tab-content.active {
+            display: block; /* Show active content */
+        }
+
+        /* --- Interactive Quiz Styles (MCQ/TF) --- */
+        .question-block {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .options button:hover:not(:disabled) {
+            background-color: #e9e9e9;
+        }
+
+        .options button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none; /* Initially hidden */
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .options button.selected.correct {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .options button.selected.incorrect {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .options button.reveal-correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            font-weight: bold;
+        }
+
+        /* --- Practical/Essay Question Styles --- */
+        .practical-item, .essay-item { /* Combined style */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+         .practical-item:last-child, .essay-item:last-child { /* Combined style */
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .practical-question-toggle, .essay-question-toggle { /* Combined style */
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin: 0;
+            border: 1px solid #ddd;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            position: relative; /* For pseudo-element */
+        }
+
+        .practical-question-toggle:hover, .essay-question-toggle:hover { /* Combined style */
+            background-color: #e0e0e0;
+        }
+
+        /* Add an indicator for expansion state */
+        .practical-question-toggle::after, .essay-question-toggle::after { /* Combined style */
+            content: '+';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #555;
+        }
+        .practical-question-toggle.active::after, .essay-question-toggle.active::after { /* Combined style */
+            content: '−'; /* Minus sign when active */
+        }
+
+        .practical-answer, .essay-answer { /* Combined style */
+            /* Start hidden, use max-height for transition */
+            max-height: 0;
+            overflow: hidden;
+            transition: padding 0.4s ease-out, max-height 0.4s ease-out; /* Keep max-height for collapse */
+            padding: 0 15px; /* No padding when collapsed */
+            background-color: #fdfdfd; /* Slight background difference */
+            border: 1px solid #eee;
+            border-top: none; /* Avoid double border */
+            border-radius: 0 0 5px 5px; /* Match toggle button */
+            margin-top: -1px; /* Overlap border */
+        }
+
+        .practical-answer.active, .essay-answer.active { /* Combined style */
+             /* Allow content to determine height */
+            max-height: 1000px; /* Use a large enough max-height for transition */
+            padding: 15px; /* Add padding when expanded */
+            /* overflow: visible; */ /* Can cause layout issues, use large max-height instead */
+        }
+
+        /* Style for code blocks */
+        pre {
+            background-color: #eef;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto; /* Add scrollbars if code is wide */
+            font-family: monospace;
+        }
+        code {
+             font-family: monospace;
+        }
+
+        /* Optional: Style for inline code tags */
+        code:not([class*="language-"]) { /* Target inline code, not blocks */
+            background-color: #eee;
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        code[class*="language-"] { /* Target code blocks */
+             font-family: monospace;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Java Mock Exam (SE 109)</h1>
+
+    <div class="quiz-container">
+
+        <div class="tab-buttons">
+            <button id="tab-btn-interactive" class="active">Interactive Quiz (MCQ/TF)</button>
+            <button id="tab-btn-practical">Practical Questions</button>
+            <button id="tab-btn-essay">Essay Questions</button>
+        </div>
+
+        <div id="tab-content-interactive" class="tab-content active">
+            <!-- Interactive Questions (MCQ/TF) will be loaded here -->
+             <p style="font-style: italic; color: #666;">Loading interactive questions...</p>
+        </div>
+
+        <div id="tab-content-practical" class="tab-content">
+             <!-- Practical Questions will be loaded here -->
+             <p style="font-style: italic; color: #666;">Loading practical questions...</p>
+        </div>
+
+        <div id="tab-content-essay" class="tab-content">
+             <!-- Essay Questions will be loaded here -->
+             <p style="font-style: italic; color: #666;">Loading essay questions...</p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Data for Quizzes ---
+
+        const interactiveQuizData = [
+            // Sample Questions based on PDF Lectures 1-5
+            {
+                question: "Which OOP principle involves bundling data (attributes) and methods that operate on the data within a single unit (class)?",
+                options: ["Abstraction", "Inheritance", "Polymorphism", "Encapsulation"],
+                answer: "Encapsulation" // Ref: Lecture 2, Slide 40
+            },
+            {
+                question: "What is the term for defining a new class based on an existing class, inheriting its properties and methods?",
+                options: ["Abstraction", "Inheritance", "Polymorphism", "Encapsulation"],
+                answer: "Inheritance" // Ref: Lecture 2, Slide 55-57
+            },
+            {
+                question: "In Java, the `new` keyword is used to:",
+                options: ["Declare a variable", "Define a class", "Create an instance (object) of a class", "Compile a program"],
+                answer: "Create an instance (object) of a class" // Ref: Lecture 1, Slide 26; Lecture 5, Slide 145
+            },
+            {
+                question: "Which access modifier allows access only within the same class?",
+                options: ["public", "private", "protected", "default"],
+                answer: "private" // Ref: Lecture 5, Slide 292
+            },
+            {
+                question: "Which loop structure executes its body at least once?",
+                options: ["for", "while", "do-while", "for-each"],
+                answer: "do-while" // Ref: Lecture 4, Slide 228
+            },
+            {
+                question: "The `javac` command is used to:",
+                options: ["Run a Java program", "Compile a Java source file (.java) into bytecode (.class)", "Debug a Java program", "Create Java documentation"],
+                answer: "Compile a Java source file (.java) into bytecode (.class)" // Ref: Lecture 3, Slide 138, 149
+            },
+            {
+                question: "Primitive data types in Java (like int, float, boolean) have methods associated with them.",
+                options: ["True", "False"],
+                answer: "False" // Ref: Lecture 4, Slide 156
+            },
+            {
+                question: "The `static` keyword indicates that a variable or method belongs to the class itself, rather than to an instance of the class.",
+                options: ["True", "False"],
+                answer: "True" // Ref: Lecture 5, Slide 282, 296, 298
+            },
+             {
+                question: "Which keyword is used by a subclass to inherit from a superclass in Java?",
+                options: ["inherits", "super", "extends", "implements"],
+                answer: "extends" // Ref: Lecture 2, Slide 65, 70
+            },
+            {
+                question: "What is the result of the expression `5 / 2` in Java?",
+                options: ["2.5", "2", "3", "Compilation Error"],
+                answer: "2" // Integer division
+            },
+            {
+                question: "The `break` statement can be used to exit immediately from a loop or a switch statement.",
+                options: ["True", "False"],
+                answer: "True" // Ref: Lecture 4, Slide 219, 229, 230
+            },
+            {
+                question: "Arrays in Java have a fixed size once created.",
+                 options: ["True", "False"],
+                answer: "True" // Ref: Lecture 4, Slide 241 (249 in full deck)
+            }
+        ];
+
+        const practicalQuizData = [
+            { // 1. Output Prediction
+                question: "What is the output of the following Java code snippet?",
+                answer: `
+<pre><code class="language-java">
+public class OutputTest1 {
+    public static void main(String[] args) {
+        for (int i = 0; i < 5; i++) {
+            if (i == 3) {
+                continue;
+            }
+            System.out.print(i + " ");
+            if (i == 4) {
+                 break; // Added break for variation
+            }
+        }
+         System.out.println("Loop finished.");
+    }
+}
+</code></pre>
+                <hr>
+                <strong>Explanation:</strong><br>
+                The loop iterates from i=0 to 4.<br>
+                - i=0: Prints "0 "<br>
+                - i=1: Prints "1 "<br>
+                - i=2: Prints "2 "<br>
+                - i=3: The <code>continue</code> statement is hit, skipping the print statement for i=3.<br>
+                - i=4: Prints "4 ", then the <code>break</code> statement is hit, exiting the loop.<br>
+                - Finally, "Loop finished." is printed.<br><br>
+                <strong>Output:</strong>
+<pre>
+0 1 2 4 Loop finished.
+</pre>`
+            },
+            { // 2. Error Definition
+                question: "Identify the error(s) in the following Java code and explain why they occur.",
+                answer: `
+<pre><code class="language-java">
+public class ErrorTest1 {
+    private int value = 10;
+
+    public static void main(String[] args) {
+        System.out.println(value); // Error 1
+        printValue(); // Error 2
+    }
+
+    public void printValue() {
+        System.out.println("Value is: " + value);
+    }
+}
+</code></pre>
+                <hr>
+                <strong>Errors and Explanations:</strong><br>
+                1.  **Error 1 (<code>System.out.println(value);</code>):** Cannot make a static reference to the non-static field 'value'. The <code>main</code> method is <code>static</code>, meaning it belongs to the class itself, not an instance. The variable <code>value</code> is an *instance* variable, belonging to objects of the <code>ErrorTest1</code> class. You cannot directly access an instance variable from a static context without an object.<br>
+                2.  **Error 2 (<code>printValue();</code>):** Cannot make a static reference to the non-static method 'printValue()' from the type 'ErrorTest1'. Similar to the first error, <code>main</code> is static, while <code>printValue()</code> is an *instance* method. You need an object of <code>ErrorTest1</code> to call <code>printValue()</code>.<br><br>
+                <strong>Correction:</strong> To fix this, you need to create an instance of <code>ErrorTest1</code> within <code>main</code>:<br>
+<pre><code class="language-java">
+public class ErrorTest1 {
+    private int value = 10;
+
+    public static void main(String[] args) {
+        ErrorTest1 obj = new ErrorTest1();
+        System.out.println(obj.value); // Access via object
+        obj.printValue(); // Call via object
+    }
+
+    public void printValue() {
+        System.out.println("Value is: " + value);
+    }
+}
+</code></pre>`
+            },
+            { // 3. Conversion: If -> Switch
+                question: "Convert the following Java if-else-if structure into an equivalent switch statement.",
+                answer: `
+                <strong>Original Code:</strong>
+<pre><code class="language-java">
+int day = 3;
+String dayString;
+
+if (day == 1) {
+    dayString = "Monday";
+} else if (day == 2) {
+    dayString = "Tuesday";
+} else if (day == 3) {
+    dayString = "Wednesday";
+} else if (day == 4) {
+    dayString = "Thursday";
+} else if (day == 5) {
+    dayString = "Friday";
+} else {
+    dayString = "Weekend";
+}
+System.out.println(dayString);
+</code></pre>
+                <hr>
+                <strong>Equivalent Switch Statement:</strong>
+<pre><code class="language-java">
+int day = 3;
+String dayString;
+
+switch (day) {
+    case 1:
+        dayString = "Monday";
+        break;
+    case 2:
+        dayString = "Tuesday";
+        break;
+    case 3:
+        dayString = "Wednesday";
+        break;
+    case 4:
+        dayString = "Thursday";
+        break;
+    case 5:
+        dayString = "Friday";
+        break;
+    default: // Catches Saturday, Sunday, and invalid days if day could be outside 1-7
+        dayString = "Weekend";
+        break; // Good practice to include break in default
+}
+System.out.println(dayString);
+</code></pre>
+                <strong>Note:</strong> <code>break</code> statements are crucial in <code>switch</code> to prevent fall-through to the next case.`
+            },
+             { // 3. Conversion: Switch -> If
+                question: "Convert the following Java switch statement into an equivalent if-else-if structure.",
+                answer: `
+                <strong>Original Code:</strong>
+<pre><code class="language-java">
+char grade = 'B';
+String comment;
+
+switch (grade) {
+    case 'A':
+        comment = "Excellent!";
+        break;
+    case 'B':
+        comment = "Good job!";
+        break;
+    case 'C':
+        comment = "Passed.";
+        break;
+    case 'D':
+    case 'F': // Fall-through example
+        comment = "Needs improvement.";
+        break;
+    default:
+        comment = "Invalid grade.";
+        break;
+}
+System.out.println(comment);
+</code></pre>
+                <hr>
+                <strong>Equivalent If-Else-If Structure:</strong>
+<pre><code class="language-java">
+char grade = 'B';
+String comment;
+
+if (grade == 'A') {
+    comment = "Excellent!";
+} else if (grade == 'B') {
+    comment = "Good job!";
+} else if (grade == 'C') {
+    comment = "Passed.";
+} else if (grade == 'D' || grade == 'F') { // Handle fall-through with OR
+    comment = "Needs improvement.";
+} else {
+    comment = "Invalid grade.";
+}
+System.out.println(comment);
+</code></pre>`
+            },
+            { // 4. Conversion: for -> for-each
+                question: "Convert the following standard Java for loop into an equivalent for-each loop.",
+                answer: `
+                <strong>Original Code:</strong>
+<pre><code class="language-java">
+String[] fruits = {"Apple", "Banana", "Cherry"};
+
+for (int i = 0; i < fruits.length; i++) {
+    System.out.println(fruits[i]);
+}
+</code></pre>
+                <hr>
+                <strong>Equivalent For-Each Loop:</strong>
+<pre><code class="language-java">
+String[] fruits = {"Apple", "Banana", "Cherry"};
+
+for (String fruit : fruits) {
+    System.out.println(fruit);
+}
+</code></pre>
+                <strong>Explanation:</strong> The for-each loop simplifies iteration over arrays (and collections). <code>String fruit</code> declares a variable to hold each element, and <code>: fruits</code> specifies the array to iterate over.`
+            },
+             { // 4. Conversion: for-each -> for
+                question: "Convert the following Java for-each loop into an equivalent standard for loop.",
+                answer: `
+                <strong>Original Code:</strong>
+<pre><code class="language-java">
+int[] numbers = {10, 20, 30, 40};
+int sum = 0;
+
+for (int num : numbers) {
+    sum += num;
+}
+System.out.println("Sum: " + sum);
+</code></pre>
+                <hr>
+                <strong>Equivalent Standard For Loop:</strong>
+<pre><code class="language-java">
+int[] numbers = {10, 20, 30, 40};
+int sum = 0;
+
+for (int i = 0; i < numbers.length; i++) {
+    int num = numbers[i]; // Explicitly get element by index
+    sum += num;
+}
+System.out.println("Sum: " + sum);
+</code></pre>
+                 <strong>Explanation:</strong> The standard for loop requires an index variable (<code>i</code>), a condition based on the array's length, and an increment step. Inside the loop, you access the element using the index (<code>numbers[i]</code>).`
+            },
+             { // 5. Conversion: while -> do-while
+                question: "Convert the following Java while loop into an equivalent do-while loop.",
+                answer: `
+                <strong>Original Code:</strong>
+<pre><code class="language-java">
+int count = 0;
+while (count < 3) {
+    System.out.println("Count is: " + count);
+    count++;
+}
+</code></pre>
+                <hr>
+                <strong>Equivalent Do-While Loop:</strong>
+<pre><code class="language-java">
+int count = 0;
+do {
+    System.out.println("Count is: " + count);
+    count++;
+} while (count < 3);
+</code></pre>
+                <strong>Explanation:</strong> The <code>do-while</code> loop executes the body *first* and then checks the condition. The <code>while</code> loop checks the condition *before* executing the body. In this specific case, the output is the same, but if the initial condition <code>count < 3</code> were false (e.g., <code>count = 5</code>), the <code>while</code> loop wouldn't execute at all, while the <code>do-while</code> loop would execute once.`
+            },
+             { // 5. Conversion: do-while -> while
+                question: "Convert the following Java do-while loop into an equivalent while loop.",
+                answer: `
+                <strong>Original Code:</strong>
+<pre><code class="language-java">
+int num = 5;
+do {
+    System.out.print(num + " ");
+    num--;
+} while (num > 0);
+// Output: 5 4 3 2 1
+</code></pre>
+                <hr>
+                <strong>Equivalent While Loop:</strong>
+<pre><code class="language-java">
+int num = 5;
+while (num > 0) {
+    System.out.print(num + " ");
+    num--;
+}
+// Output: 5 4 3 2 1
+</code></pre>
+                <strong>Explanation:</strong> Since the condition <code>num > 0</code> is initially true, the <code>while</code> loop behaves identically to the <code>do-while</code> loop in this case. The structure changes slightly, moving the condition check to the beginning.`
+            },
+            { // 6. Code Writing: Factorial
+                question: "Write a Java method `calculateFactorial(int n)` that calculates and returns the factorial of a non-negative integer `n`.",
+                answer: `
+                <strong>Iterative Solution:</strong>
+<pre><code class="language-java">
+public class MathUtils {
+
+    public static long calculateFactorial(int n) {
+        if (n < 0) {
+            // Factorial is not defined for negative numbers
+            // Could throw an exception or return an error code
+            System.err.println("Factorial not defined for negative numbers.");
+            return -1; // Or throw IllegalArgumentException
+        }
+        if (n == 0 || n == 1) {
+            return 1; // Factorial of 0 and 1 is 1
+        }
+
+        long factorial = 1;
+        for (int i = 2; i <= n; i++) {
+            factorial *= i; // Or factorial = factorial * i;
+        }
+        return factorial;
+    }
+
+    // Example usage in main
+    public static void main(String[] args) {
+        int number = 5;
+        long result = calculateFactorial(number);
+        if (result != -1) {
+             System.out.println("Factorial of " + number + " is: " + result); // Output: 120
+        }
+
+         number = 0;
+         result = calculateFactorial(number);
+         if (result != -1) {
+             System.out.println("Factorial of " + number + " is: " + result); // Output: 1
+         }
+    }
+}
+</code></pre>
+                <strong>Note:</strong> Using <code>long</code> for the return type helps handle larger factorial values before overflow occurs compared to <code>int</code>. Added basic error handling for negative input.`
+            },
+             { // 6. Code Writing: Even/Odd
+                question: "Write a Java method `isEven(int number)` that returns `true` if the given integer is even, and `false` otherwise.",
+                answer: `
+<pre><code class="language-java">
+public class NumberChecker {
+
+    public static boolean isEven(int number) {
+        // The modulo operator (%) gives the remainder of a division.
+        // If a number divided by 2 has a remainder of 0, it's even.
+        return (number % 2 == 0);
+    }
+
+    // Example usage in main
+    public static void main(String[] args) {
+        int num1 = 10;
+        int num2 = 7;
+
+        System.out.println(num1 + " is even: " + isEven(num1)); // Output: true
+        System.out.println(num2 + " is even: " + isEven(num2)); // Output: false
+    }
+}
+</code></pre>
+                <strong>Explanation:</strong> The core logic uses the modulo operator (<code>%</code>). If <code>number % 2</code> equals 0, the number is even, and the method returns <code>true</code>. Otherwise, it returns <code>false</code>.`
+            },
+             { // 6. Code Writing: Print Star Pattern
+                question: "Write Java code using nested loops to print the following star pattern:",
+                answer: `
+                <strong>Target Pattern:</strong>
+<pre>
+*
+**
+***
+****
+*****
+</pre>
+                <hr>
+                <strong>Java Code:</strong>
+<pre><code class="language-java">
+public class StarPattern {
+    public static void main(String[] args) {
+        int rows = 5; // Number of rows in the pattern
+
+        // Outer loop controls the rows
+        for (int i = 1; i <= rows; i++) {
+            // Inner loop controls the number of stars in the current row
+            // It prints 'i' stars for the i-th row
+            for (int j = 1; j <= i; j++) {
+                System.out.print("*");
+            }
+            // Move to the next line after printing stars for the current row
+            System.out.println();
+        }
+    }
+}
+</code></pre>
+                <strong>Explanation:</strong> The outer loop iterates from 1 to the desired number of rows (<code>rows</code>). The inner loop iterates from 1 up to the current row number (<code>i</code>). In each iteration of the inner loop, a star (<code>*</code>) is printed without a newline. After the inner loop completes for a given row <code>i</code> (meaning <code>i</code> stars have been printed), <code>System.out.println();</code> is called to move the cursor to the next line, starting the next row.`
+            },
+        ];
+
+         const essayQuizData = [
+             // Add essay questions here if needed, e.g.:
+            /*
+            {
+                 question: "Based on Lecture 2 (pages 38-54), briefly explain the difference between Encapsulation and Abstraction using a simple Java analogy.",
+                 answer: "<strong>Encapsulation:</strong> Is like a capsule for medicine. It bundles the 'data' (the medicine ingredients, often kept private/hidden inside) and the 'methods' (how the capsule delivers the medicine) together. It hides the internal details (how the medicine works chemically - the implementation) from the outside world. You interact with the capsule (object) through its defined interface (swallowing it), not by accessing the raw ingredients directly. It protects the internal state. <br><br> <strong>Abstraction:</strong> Is like the steering wheel and pedals of a car. It shows only the *essential features* needed to interact with the car (steering, accelerating, braking) while hiding the complex *implementation details* (engine mechanics, hydraulics). You know *what* the steering wheel does (turn the car), but you don't need to know *how* it does it mechanically to use it effectively. Abstraction focuses on the 'what' (interface/methods visible) rather than the 'how' (implementation hidden)."
+            }
+            */
+         ];
+
+
+        // --- DOM References ---
+        const interactiveQuizContainer = document.getElementById('tab-content-interactive');
+        const practicalQuizContainer = document.getElementById('tab-content-practical');
+        const essayQuizContainer = document.getElementById('tab-content-essay');
+        const tabButtons = document.querySelectorAll('.tab-buttons button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // --- Tab Switching Logic ---
+        function activateTab(tabId) {
+            // Deactivate all buttons and content panes first
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Activate the clicked button and corresponding content pane
+            const buttonToActivate = document.getElementById(`tab-btn-${tabId}`);
+            const contentToActivate = document.getElementById(`tab-content-${tabId}`);
+
+            if (buttonToActivate) {
+                buttonToActivate.classList.add('active');
+            }
+            if (contentToActivate) {
+                contentToActivate.classList.add('active');
+            }
+        }
+
+        // Add event listeners to tab buttons
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Extract the core ID part (e.g., 'interactive', 'practical', 'essay')
+                const tabId = button.id.replace('tab-btn-', '');
+                activateTab(tabId);
+            });
+        });
+
+        // --- Interactive Quiz Display Logic ---
+        function displayInteractiveQuiz() {
+            interactiveQuizContainer.innerHTML = ''; // Clear placeholder/previous content
+            interactiveQuizData.forEach((qData, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.classList.add('question-block');
+                questionBlock.setAttribute('data-question-index', index);
+
+                const questionText = document.createElement('p');
+                questionText.classList.add('question-text');
+                questionText.textContent = `${index + 1}. ${qData.question}`;
+                questionBlock.appendChild(questionText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.classList.add('options');
+
+                qData.options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option;
+                    button.addEventListener('click', handleInteractiveAnswer);
+                    optionsDiv.appendChild(button);
+                });
+
+                questionBlock.appendChild(optionsDiv);
+
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.classList.add('feedback');
+                questionBlock.appendChild(feedbackDiv);
+
+                interactiveQuizContainer.appendChild(questionBlock);
+            });
+        }
+
+        function handleInteractiveAnswer(event) {
+            const selectedButton = event.target;
+            const questionBlock = selectedButton.closest('.question-block');
+            const questionIndex = parseInt(questionBlock.getAttribute('data-question-index'), 10);
+            const selectedAnswer = selectedButton.textContent;
+            const correctAnswer = interactiveQuizData[questionIndex].answer;
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionButtons = questionBlock.querySelectorAll('.options button');
+
+            optionButtons.forEach(button => {
+                button.disabled = true; // Disable buttons after selection
+            });
+
+            selectedButton.classList.add('selected');
+
+            if (selectedAnswer === correctAnswer) {
+                selectedButton.classList.add('correct');
+                feedbackDiv.textContent = 'Correct!';
+                feedbackDiv.classList.add('correct');
+            } else {
+                selectedButton.classList.add('incorrect');
+                feedbackDiv.textContent = `Incorrect. The correct answer is: ${correctAnswer}`;
+                feedbackDiv.classList.add('incorrect');
+                optionButtons.forEach(button => {
+                    if (button.textContent === correctAnswer) {
+                        button.classList.add('reveal-correct');
+                    }
+                });
+            }
+        }
+
+        // --- Practical Quiz Display Logic ---
+        function displayPracticalQuestions() {
+            practicalQuizContainer.innerHTML = ''; // Clear placeholder
+            if (practicalQuizData.length === 0) {
+                 practicalQuizContainer.innerHTML = '<p style="font-style: italic; color: #666;">No practical questions available yet.</p>';
+                 return;
+            }
+
+            practicalQuizData.forEach((qData, index) => {
+                const practicalItem = document.createElement('div');
+                practicalItem.classList.add('practical-item'); // Use specific class if needed, or reuse essay-item
+
+                const questionToggle = document.createElement('button');
+                questionToggle.classList.add('practical-question-toggle'); // Use specific class
+                questionToggle.textContent = `Practical ${index + 1}. ${qData.question}`;
+                questionToggle.setAttribute('aria-expanded', 'false');
+                questionToggle.setAttribute('aria-controls', `practical-answer-${index}`);
+
+                const answerDiv = document.createElement('div');
+                answerDiv.classList.add('practical-answer'); // Use specific class
+                answerDiv.id = `practical-answer-${index}`;
+                // Use innerHTML for answers to render code formatting correctly
+                answerDiv.innerHTML = `<strong>Solution/Explanation:</strong> ${qData.answer}`;
+
+                questionToggle.addEventListener('click', () => {
+                    const isExpanded = questionToggle.getAttribute('aria-expanded') === 'true';
+                    questionToggle.setAttribute('aria-expanded', !isExpanded);
+                    questionToggle.classList.toggle('active');
+                    answerDiv.classList.toggle('active');
+                });
+
+                practicalItem.appendChild(questionToggle);
+                practicalItem.appendChild(answerDiv);
+                practicalQuizContainer.appendChild(practicalItem);
+            });
+        }
+
+        // --- Essay Quiz Display Logic ---
+         function displayEssayQuestions() {
+            essayQuizContainer.innerHTML = ''; // Clear placeholder
+            if (essayQuizData.length === 0) {
+                 essayQuizContainer.innerHTML = '<p style="font-style: italic; color: #666;">No essay questions available yet.</p>';
+                 return;
+            }
+
+            essayQuizData.forEach((qData, index) => {
+                const essayItem = document.createElement('div');
+                essayItem.classList.add('essay-item');
+
+                const questionToggle = document.createElement('button');
+                questionToggle.classList.add('essay-question-toggle');
+                questionToggle.textContent = `Essay ${index + 1}. ${qData.question}`;
+                questionToggle.setAttribute('aria-expanded', 'false');
+                questionToggle.setAttribute('aria-controls', `essay-answer-${index}`);
+
+                const answerDiv = document.createElement('div');
+                answerDiv.classList.add('essay-answer');
+                answerDiv.id = `essay-answer-${index}`;
+                answerDiv.innerHTML = `<strong>Answer:</strong> ${qData.answer}`;
+
+                questionToggle.addEventListener('click', () => {
+                    const isExpanded = questionToggle.getAttribute('aria-expanded') === 'true';
+                    questionToggle.setAttribute('aria-expanded', !isExpanded);
+                    questionToggle.classList.toggle('active');
+                    answerDiv.classList.toggle('active');
+                });
+
+                essayItem.appendChild(questionToggle);
+                essayItem.appendChild(answerDiv);
+                essayQuizContainer.appendChild(essayItem);
+            });
+        }
+
+        // --- Initial Call to Display Content ---
+        displayInteractiveQuiz();
+        displayPracticalQuestions();
+        displayEssayQuestions();
+        // The initial active tab is set by the 'active' class in the HTML,
+        // so no explicit call to activateTab is needed on load unless
+        // you want to dynamically set the initial tab.
+
+    </script>
+    <!-- Add Prism.js JS (Core and Java component) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+</html>
